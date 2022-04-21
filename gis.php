@@ -47,14 +47,37 @@ class GISPlugin extends Plugin
      */
     public function onPluginsInitialized(): void
     {
-        // Don't proceed if we are in the admin plugin
-        if ($this->isAdmin()) {
-            return;
-        }
-
         // Enable the main events we are interested in
         $this->enable([
             // Put your main events here
+            'onAssetsInitialized' => ['onAssetsInitialized', 0],
         ]);
+    }
+
+    /**
+     * onAssetsInitialized
+     *
+     * @return void
+     */
+    public function onAssetsInitialized(): void
+    {
+        if ($this->isAdmin() && $this->config->get('plugins.gis.private.load')) {
+            $this->loadLeaflet();
+        }
+
+        if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
+            $this->loadLeaflet();
+        }
+    }
+
+    /**
+     * loadLeaflet
+     *
+     * @return void
+     */
+    private function loadLeaflet(): void
+    {
+        $this->grav['assets']->addJs('plugins://' . $this->name . '/lib/leaflet/leaflet.js', ['loading' => 'defer']);
+        $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.min.css');
     }
 }

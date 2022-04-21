@@ -30,3 +30,31 @@ form:
         0: PLUGIN_ADMIN.DISABLED
       validate:
         type: bool
+    private:
+      type: fieldset
+      title: PLUGIN_GIS.PRIVATE
+      fields:
+        private.load:
+          type: toggle
+          label: PLUGIN_GIS.LOAD
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool
+    public:
+      type: fieldset
+      title: PLUGIN_GIS.PUBLIC
+      fields:
+        public.load:
+          type: toggle
+          label: PLUGIN_GIS.LOAD
+          highlight: 1
+          default: 0
+          options:
+            1: PLUGIN_ADMIN.ENABLED
+            0: PLUGIN_ADMIN.DISABLED
+          validate:
+            type: bool

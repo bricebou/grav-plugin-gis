@@ -1,1 +1,5 @@
 enabled: true
+private:
+  load: true
+public:
+  load: true
