@@ -1,0 +1,32 @@
+name: GIS
+slug: gis
+type: plugin
+version: 0.1.0
+description: This plugin, using the Leaflet javascript library, aims to provide a simple way to geolocate contents and to display interactive maps.
+icon: map-o
+author:
+  name: Brice Boucard
+  email: brice@reclic.dev
+homepage: https://github.com/bricebou/grav-plugin-gis
+demo: http://grav.reclic.dev
+keywords: grav, plugin, gis, leaflet, map
+bugs: https://github.com/bricebou/grav-plugin-gis/issues
+docs: https://github.com/bricebou/grav-plugin-gis/blob/develop/README.md
+license: MIT
+
+dependencies:
+  - { name: grav, version: '>=1.7.0' }
+
+form:
+  validation: loose
+  fields:
+    enabled:
+      type: toggle
+      label: PLUGIN_ADMIN.PLUGIN_STATUS
+      highlight: 1
+      default: 0
+      options:
+        1: PLUGIN_ADMIN.ENABLED
+        0: PLUGIN_ADMIN.DISABLED
+      validate:
+        type: bool
