@@ -1,0 +1,12 @@
+extends@:
+    type: default
+
+form:
+  fields:
+    tabs:
+      fields:
+        geolocation:
+          type: tab
+          title: PLUGIN_GIS.GEOLOCATION
+          import@:
+            type: partials/geolocation

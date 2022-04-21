@@ -44,6 +44,24 @@ form:
             0: PLUGIN_ADMIN.DISABLED
           validate:
             type: bool
+        private.height:
+          type: number
+          label: PLUGIN_GIS.PRIVATE_HEIGHT
+          default: '340'
+          validate:
+            type: int
+        private.center:
+          type: text
+          label: PLUGIN_GIS.PRIVATE_DEFAULT_CENTER
+          default: '51.505, -0.093'
+          validate:
+            type: text
+        private.zoom:
+          type: number
+          label: PLUGIN_GIS.PRIVATE_AUTOCENTER_MAX_ZOOM
+          default: '13'
+          validate:
+            type: int
     public:
       type: fieldset
       title: PLUGIN_GIS.PUBLIC

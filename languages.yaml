@@ -1,2 +1,28 @@
 en:
   PLUGIN_GIS:
+    # C
+    COORDINATES: 'Coordinates'
+    # G
+    GEOLOCATION: 'Geolocation'
+    # L
+    LOAD: 'Load the library'
+    # P
+    PRIVATE: 'Admin area'
+    PRIVATE_AUTOCENTER_MAX_ZOOM: 'Max zoom when fitting bounds'
+    PRIVATE_DEFAULT_CENTER: 'Default center when setting view'
+    PRIVATE_HEIGHT : 'Map height'
+    PUBLIC: 'Public area'
+fr:
+  PLUGIN_GIS:
+    # C
+    COORDINATES: 'Coordonnées'
+    # G
+    GEOLOCATION: 'Géolocalisation'
+    # L
+    LOAD: 'Charger Leaflet'
+    # P
+    PRIVATE: "Interface d'administration"
+    PRIVATE_AUTOCENTER_MAX_ZOOM: 'Zoom max lorsque centrage automatique'
+    PRIVATE_DEFAULT_CENTER: 'Centre par défaut de la carte'
+    PRIVATE_HEIGHT : 'Hauteur de la carte'
+    PUBLIC: 'Interface publique'

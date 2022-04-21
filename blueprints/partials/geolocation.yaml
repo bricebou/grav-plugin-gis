@@ -1,0 +1,8 @@
+form:
+  fields:
+    map:
+      type: map
+      label: PLUGIN_GIS.MAP
+    header.coordinates:
+      type: text
+      label: PLUGIN_GIS.COORDINATES

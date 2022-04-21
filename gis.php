@@ -51,6 +51,8 @@ class GISPlugin extends Plugin
         $this->enable([
             // Put your main events here
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
+            'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
+            'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
         ]);
     }
 
@@ -63,11 +65,28 @@ class GISPlugin extends Plugin
     {
         if ($this->isAdmin() && $this->config->get('plugins.gis.private.load')) {
             $this->loadLeaflet();
+
+            $center = $this->config->get('plugins.gis.private.center');
+            $zoom = $this->config->get('plugins.gis.private.zoom');
+            $this->grav['assets']->addJs('plugins://' . $this->name . '/js/admin.geolocation.js', ['loading' => 'defer', 'zoom' => $zoom, 'center' => $center ]);
         }
 
         if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
             $this->loadLeaflet();
         }
+    }
+
+    public function onGetPageBlueprints($event): void
+    {
+        $types = $event->types;
+        $types->scanBlueprints('plugins://' . $this->name . '/blueprints');
+    }
+
+    public function onAdminTwigTemplatePaths($event): void
+    {
+        $paths = $event['paths'];
+        $paths[] = __DIR__ . '/templates';
+        $event['paths'] = $paths;
     }
 
     /**
