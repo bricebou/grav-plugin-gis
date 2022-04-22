@@ -1,3 +1,6 @@
+const center = document.currentScript.getAttribute('center');
+const zoom = document.currentScript.getAttribute('zoom');
+
 function commaStringToLatLng(string) {
 	let latlng = string.split(',');
 	latlng[0] = parseFloat(latlng[0]);
@@ -6,37 +9,37 @@ function commaStringToLatLng(string) {
 	return new L.LatLng(latlng[0], latlng[1]);
 }
 
-function map(center, zoom) {
-	const input = document.querySelector('input[name="data[header][coordinates]"]');
-	let coordinates = [];
-	let markerID = 0;
+function updateInputValue(target,value) {
+	target.value = value;
+}
 
-	let map = L.map('leaflet')
+function appendLeafletMap(node, lat, lng) {
+	let coordinates = [];
+	let marker;
+
+	let mapContainer = document.createElement('div');
+	mapContainer.classList.add('leaflet-map');
+	mapContainer.style.height = '300px';
+
+	node.appendChild(mapContainer);
+
+	let leafletMapContainer = node.querySelector('.leaflet-map');
+
+	let map = L.map(leafletMapContainer);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	}).addTo(map);
 	autoCenterZoom();
 
-	if (!!input.value) {
-		let arrayInput = input.value.split(';');
-		arrayInput.forEach(element => {
-			let coordinate = commaStringToLatLng(element);
-			createMarker(coordinate, true, markerID);
-			markerID += 1;
-		});
-	}
-
-	function editInput() {
-		let values = [];
-		coordinates.forEach(element => {
-			values.push(element.lat + ',' + element.lng);
-		});
-		input.value = values.join(';');
+	if (lat.value && lng.value) {
+		let string = lat.value + ',' + lng.value;
+		addMarker(commaStringToLatLng(string));
+		autoCenterZoom();
 	}
 
 	function autoCenterZoom() {
 		if (!coordinates.flat().length) {
-			map.setView(center, zoom)
+			map.setView(commaStringToLatLng(center), zoom)
 		}
 		else {
 			let bounds = new L.LatLngBounds(coordinates);
@@ -44,53 +47,61 @@ function map(center, zoom) {
 		}
 	}
 
-	function createMarker(latlng, draggable, id) {
+	function addMarker(latlng) {
 		const markerOptions = {
-			draggable: draggable,
-			id: id,
+			draggable: true,
 		}
-
-		let marker = L.marker(latlng, markerOptions).addTo(map);
-		coordinates[id] = latlng;
-		editInput();
-		autoCenterZoom();
-
-		marker.on('click', function(event) {
-			map.removeLayer(event.target);
-			// coordinates.splice(event.target.options.id, 1);
-			delete coordinates[event.target.options.id];
-			console.log(coordinates);
-			editInput();
-			autoCenterZoom();
-		});
+		marker = L.marker(latlng, markerOptions).addTo(map);
+		coordinates.push(latlng);
 
 		marker.on('dragend', function(event){
-			coordinates[event.target.options.id] = event.target._latlng;
-			editInput();
+			coordinates[0] = event.target._latlng;
 			autoCenterZoom();
+			updateInputValue(lat, event.target._latlng.lat);
+			updateInputValue(lng, event.target._latlng.lng);
 		});
 	}
 
 	map.on('click', function (e) {
-		createMarker(e.latlng, true, markerID);
-		markerID += 1;
-	})
+		if (marker) {
+			delete coordinates[0];
+			map.removeLayer(marker);
+			autoCenterZoom();
+		}
+		addMarker(e.latlng);
+		autoCenterZoom();
+		updateInputValue(lat, e.latlng.lat);
+		updateInputValue(lng, e.latlng.lng);
+	});
 }
 
-const center = document.currentScript.getAttribute('center');
-const zoom = document.currentScript.getAttribute('zoom');
+// select the observer's target node
+const markersList = document.querySelector('.form-list-wrapper[data-type="collection"] [data-collection-holder="header.markers"]');
 
-const geoTab = document.querySelector('a.tab__link[data-scope="data.geolocation"]');
+if (markersList) {
+	let markersListItems = markersList.getElementsByTagName("li");
+	for (let item of markersListItems) {
+		let latInput = item.children[3].children[1].querySelector('input');
+		let lngInput = item.children[4].children[1].querySelector('input');
 
-if (geoTab) {
-	geoTab.addEventListener('click', () => {
-		if (!geoTab.classList.contains('maploaded')) {
-			geoTab.classList.add('maploaded');
-			map(commaStringToLatLng(center), zoom);
-		}
+		appendLeafletMap(item, latInput, lngInput);
+	}
+
+	// create an observer instance
+	let observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			let li = mutation.addedNodes[0];
+
+			let latInput = li.children[2].children[1].querySelector('input');
+			let lngInput = li.children[3].children[1].querySelector('input');
+
+			appendLeafletMap(li, latInput, lngInput);
+		});
 	});
 
-	if (geoTab.classList.contains('active')) {
-		map(commaStringToLatLng(center), zoom);
-	}
+	// configuration of the observer:
+	let config = { attributes: true, childList: true, characterData: true }
+
+	// pass in the target node, as well as the observer options
+	observer.observe(markersList, config);
 }

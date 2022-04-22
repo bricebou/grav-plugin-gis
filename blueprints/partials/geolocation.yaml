@@ -1,8 +1,26 @@
 form:
   fields:
-    map:
-      type: map
-      label: PLUGIN_GIS.MAP
-    header.coordinates:
-      type: text
-      label: PLUGIN_GIS.COORDINATES
+    header.markers:
+      name: markers
+      type: list
+      label: PLUGIN_GIS.MARKERS
+      sort: false
+      fields:
+        .name:
+          type: text
+          label: PLUGIN_GIS.MARKER_NAME
+          validate:
+            required: true
+        .icon:
+          type: select
+          label: PLUGIN_GIS.MARKER_ICON
+        .latitude:
+          type: text
+          label: PLUGIN_GIS.LATITUDE
+          validate:
+            required: true
+        .longitude:
+          type: text
+          label: PLUGIN_GIS.LONGITUDE
+          validate:
+            required: true
