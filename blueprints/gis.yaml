@@ -9,4 +9,4 @@ form:
           type: tab
           title: PLUGIN_GIS.GEOLOCATION
           import@:
-            type: partials/geolocation
+            type: partials/gis

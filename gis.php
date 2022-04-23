@@ -99,4 +99,19 @@ class GISPlugin extends Plugin
         $this->grav['assets']->addJs('plugins://' . $this->name . '/lib/leaflet/leaflet.js', ['loading' => 'defer']);
         $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.min.css');
     }
+
+	public function markersList()
+	{
+		$options = [];
+		$icons = glob(dirname(__FILE__) . '/lib/leaflet/images/marker-*-2x.png');
+
+		foreach ($icons as $key => $value) {
+			$matches = [];
+			preg_match('/marker-([a-z]*)-2x.png/', $value, $matches);
+
+			$options[$matches[1]] = 'PLUGIN_GIS.MARKER_' . strtoupper($matches[1]);
+		}
+
+		return $options;
+	}
 }

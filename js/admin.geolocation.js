@@ -13,7 +13,7 @@ function updateInputValue(target,value) {
 	target.value = value;
 }
 
-function appendLeafletMap(node, lat, lng) {
+function appendLeafletMap(node, lat, lng, icon) {
 	let coordinates = [];
 	let marker;
 
@@ -33,7 +33,13 @@ function appendLeafletMap(node, lat, lng) {
 
 	if (lat.value && lng.value) {
 		let string = lat.value + ',' + lng.value;
-		addMarker(commaStringToLatLng(string));
+
+		let markerIcon = 'icon';
+		if (icon.value) {
+			markerIcon = icon.value;
+		}
+
+		addMarker(commaStringToLatLng(string), markerIcon);
 		autoCenterZoom();
 	}
 
@@ -47,9 +53,24 @@ function appendLeafletMap(node, lat, lng) {
 		}
 	}
 
-	function addMarker(latlng) {
+	function addMarker(latlng, icon) {
+		if (!icon) {
+			icon = 'icon';
+		}
+		let gisIcon = L.icon({
+			iconUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '.png',
+			iconRetinaUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '-2x.png',
+			shadowUrl: '/user/plugins/gis/lib/leaflet/images/marker-shadow.png',
+			iconSize:[25,41],
+			iconAnchor:[12,41],
+			popupAnchor:[1,-34],
+			tooltipAnchor:[16,-28],
+			shadowSize:[41,41]
+		});
+
 		const markerOptions = {
 			draggable: true,
+			icon: gisIcon,
 		}
 		marker = L.marker(latlng, markerOptions).addTo(map);
 		coordinates.push(latlng);
@@ -81,10 +102,11 @@ const markersList = document.querySelector('.form-list-wrapper[data-type="collec
 if (markersList) {
 	let markersListItems = markersList.getElementsByTagName("li");
 	for (let item of markersListItems) {
+		let iconSelect = item.children[2].children[1].querySelector('select');
 		let latInput = item.children[3].children[1].querySelector('input');
 		let lngInput = item.children[4].children[1].querySelector('input');
 
-		appendLeafletMap(item, latInput, lngInput);
+		appendLeafletMap(item, latInput, lngInput, iconSelect);
 	}
 
 	// create an observer instance
