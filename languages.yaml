@@ -5,7 +5,18 @@ en:
     # G
     GEOLOCATION: 'Geolocation'
     # L
+    LATITUDE: 'Latitude'
     LOAD: 'Load the library'
+    LONGITUDE: 'Longitude'
+    # M
+    MARKER_ICON: 'Default blue icon'
+    MARKER_IMAGE: 'Marker image'
+    MARKER_NAME: "Marker's name"
+    MARKER_ORANGE: 'Orange icon'
+    MARKER_PINK: 'Pink icon'
+    MARKER_PURPLE: 'Purple icon'
+    MARKER_RED: 'Red icon'
+    MARKERS: 'Linked Coordinates'
     # P
     PRIVATE: 'Admin area'
     PRIVATE_AUTOCENTER_MAX_ZOOM: 'Max zoom when fitting bounds'
@@ -19,7 +30,18 @@ fr:
     # G
     GEOLOCATION: 'Géolocalisation'
     # L
+    LATITUDE: 'Latitude'
     LOAD: 'Charger Leaflet'
+    LONGITUDE: 'Longitude'
+    # M
+    MARKER_ICON: 'Bleu (par défaut)'
+    MARKER_IMAGE: 'Apparence du marker'
+    MARKER_NAME : 'Nom du marker'
+    MARKER_ORANGE: 'Orange'
+    MARKER_PINK: 'Rose'
+    MARKER_PURPLE: 'Mauve'
+    MARKER_RED: 'Rouge'
+    MARKERS: 'Coordonnées associées'
     # P
     PRIVATE: "Interface d'administration"
     PRIVATE_AUTOCENTER_MAX_ZOOM: 'Zoom max lorsque centrage automatique'
