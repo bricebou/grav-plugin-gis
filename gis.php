@@ -97,8 +97,6 @@ class GISPlugin extends Plugin
 
     public function gisTwigFunction(array $args = [])
     {
-
-
         $this->template_vars = [
             'id'            =>      $args['id'] ?? self::$instances,
             'height'        =>      $args['height'] ?? $this->config->get('plugins.gis.public.height'),
@@ -106,9 +104,12 @@ class GISPlugin extends Plugin
             'zoom'          =>      $args['zoom'] ?? $this->config->get('plugins.gis.public.zoom'),
         ];
 
+        $defaultLatLng = explode(',', $this->config->get('plugins.gis.public.center'));
+        $defaultMarker = ['latitude' => $defaultLatLng[0], 'longitude' => $defaultLatLng[1], 'icon' => 'icon'];
+
         $page = $this->grav['page'];
         $header = (array) $page->header();
-        $markers = $args['markers'] ?? $header['markers'];
+        $markers = $args['markers'] ?? $header['markers'] ?? array($defaultMarker);
         $this->template_vars['markers'] = $markers;
 
         $output = $this->grav['twig']->twig()->render($this->template_html, $this->template_vars);
@@ -134,7 +135,7 @@ class GISPlugin extends Plugin
         $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.min.css');
     }
 
-    public function markersList()
+    public static function markersList()
     {
         $options = [];
         $icons = glob(dirname(__FILE__) . '/lib/leaflet/images/marker-*-2x.png');
