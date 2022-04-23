@@ -52,7 +52,6 @@ class GISPlugin extends Plugin
             // Put your main events here
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
             'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
-            'onAdminTwigTemplatePaths' => ['onAdminTwigTemplatePaths', 0],
         ]);
     }
 
@@ -80,13 +79,6 @@ class GISPlugin extends Plugin
     {
         $types = $event->types;
         $types->scanBlueprints('plugins://' . $this->name . '/blueprints');
-    }
-
-    public function onAdminTwigTemplatePaths($event): void
-    {
-        $paths = $event['paths'];
-        $paths[] = __DIR__ . '/templates';
-        $event['paths'] = $paths;
     }
 
     /**
