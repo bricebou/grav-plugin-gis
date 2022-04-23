@@ -6,3 +6,6 @@ private:
   zoom: 13
 public:
   load: true
+  height: 340
+  center: '51.505, -0.093'
+  zoom: 13

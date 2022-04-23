@@ -9,6 +9,9 @@ en:
     LOAD: 'Load the library'
     LONGITUDE: 'Longitude'
     # M
+    MAP_AUTOCENTER_MAX_ZOOM: 'Max zoom when fitting bounds'
+    MAP_DEFAULT_CENTER: 'Default center when setting view'
+    MAP_HEIGHT : 'Map height'
     MARKER_ICON: 'Default blue icon'
     MARKER_IMAGE: 'Marker image'
     MARKER_NAME: "Marker's name"
@@ -19,9 +22,6 @@ en:
     MARKERS: 'Linked Coordinates'
     # P
     PRIVATE: 'Admin area'
-    PRIVATE_AUTOCENTER_MAX_ZOOM: 'Max zoom when fitting bounds'
-    PRIVATE_DEFAULT_CENTER: 'Default center when setting view'
-    PRIVATE_HEIGHT : 'Map height'
     PUBLIC: 'Public area'
 fr:
   PLUGIN_GIS:
@@ -34,6 +34,9 @@ fr:
     LOAD: 'Charger Leaflet'
     LONGITUDE: 'Longitude'
     # M
+    MAP_AUTOCENTER_MAX_ZOOM: 'Zoom max lorsque centrage automatique'
+    MAP_DEFAULT_CENTER: 'Centre par défaut de la carte'
+    MAP_HEIGHT : 'Hauteur de la carte'
     MARKER_ICON: 'Bleu (par défaut)'
     MARKER_IMAGE: 'Apparence du marker'
     MARKER_NAME : 'Nom du marker'
@@ -44,7 +47,4 @@ fr:
     MARKERS: 'Coordonnées associées'
     # P
     PRIVATE: "Interface d'administration"
-    PRIVATE_AUTOCENTER_MAX_ZOOM: 'Zoom max lorsque centrage automatique'
-    PRIVATE_DEFAULT_CENTER: 'Centre par défaut de la carte'
-    PRIVATE_HEIGHT : 'Hauteur de la carte'
     PUBLIC: 'Interface publique'

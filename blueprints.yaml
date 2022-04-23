@@ -46,19 +46,19 @@ form:
             type: bool
         private.height:
           type: number
-          label: PLUGIN_GIS.PRIVATE_HEIGHT
+          label: PLUGIN_GIS.MAP_HEIGHT
           default: '340'
           validate:
             type: int
         private.center:
           type: text
-          label: PLUGIN_GIS.PRIVATE_DEFAULT_CENTER
+          label: PLUGIN_GIS.MAP_DEFAULT_CENTER
           default: '51.505, -0.093'
           validate:
             type: text
         private.zoom:
           type: number
-          label: PLUGIN_GIS.PRIVATE_AUTOCENTER_MAX_ZOOM
+          label: PLUGIN_GIS.MAP_AUTOCENTER_MAX_ZOOM
           default: '13'
           validate:
             type: int
@@ -76,3 +76,21 @@ form:
             0: PLUGIN_ADMIN.DISABLED
           validate:
             type: bool
+        public.height:
+          type: number
+          label: PLUGIN_GIS.MAP_HEIGHT
+          default: '340'
+          validate:
+            type: int
+        public.center:
+          type: text
+          label: PLUGIN_GIS.MAP_DEFAULT_CENTER
+          default: '51.505, -0.093'
+          validate:
+            type: text
+        public.zoom:
+          type: number
+          label: PLUGIN_GIS.MAP_AUTOCENTER_MAX_ZOOM
+          default: '13'
+          validate:
+            type: int
