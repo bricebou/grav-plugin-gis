@@ -1,0 +1,45 @@
+<div id="leaflet-{{ id }}" style="width: 100%; height: {{ height }}px;"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+	let coordinates = [];
+
+	let map = L.map('leaflet-{{ id }}');
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+	function createMarker(lat, lon, icon, name) {
+		let gisIcon = L.icon({
+			iconUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '.png',
+			iconRetinaUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '-2x.png',
+			shadowUrl: '/user/plugins/gis/lib/leaflet/images/marker-shadow.png',
+			iconSize:[25,41],
+			iconAnchor:[12,41],
+			popupAnchor:[1,-34],
+			tooltipAnchor:[16,-28],
+			shadowSize:[41,41]
+		});
+
+	    let latFloat = parseFloat(lat);
+		let lonFloat = parseFloat(lon);
+
+		let latlng = new L.LatLng(latFloat, lonFloat);
+
+		const markerOptions = {
+			draggable: true,
+			icon: gisIcon,
+		}
+		marker = L.marker(latlng, markerOptions).addTo(map);
+		coordinates.push(latlng);
+	}
+
+	{% for marker in markers %}
+		createMarker('{{ marker.latitude }}', '{{ marker.longitude }}', '{{ marker.icon }}', '{{ marker.name }}');
+    {% endfor %}
+
+	let bounds = new L.LatLngBounds(coordinates);
+	map.fitBounds(bounds, {maxZoom : {{ zoom }}});
+
+});
+</script>
