@@ -82,12 +82,23 @@ class GISPlugin extends Plugin
         }
     }
 
+    /**
+     * onGetPageBlueprints
+     *
+     * @param  mixed $event
+     * @return void
+     */
     public function onGetPageBlueprints($event): void
     {
         $types = $event->types;
         $types->scanBlueprints('plugins://' . $this->name . '/blueprints');
     }
 
+    /**
+     * onTwigInitialized
+     *
+     * @return void
+     */
     public function onTwigInitialized()
     {
         $this->grav['twig']->twig()->addFunction(
@@ -119,6 +130,12 @@ class GISPlugin extends Plugin
         return $output;
     }
 
+    /**
+     * onTwigTemplatePaths
+     *
+     * @param  mixed $event
+     * @return void
+     */
     public function onTwigTemplatePaths($event): void
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
