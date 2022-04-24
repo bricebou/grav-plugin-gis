@@ -34,12 +34,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		coordinates.push(latlng);
 	}
 
-	{% for marker in markers %}
-		createMarker('{{ marker.latitude }}', '{{ marker.longitude }}', '{{ marker.icon }}', '{{ marker.name }}');
-    {% endfor %}
+	{% if markers %}
+        {% for marker in markers %}
+            createMarker('{{ marker.latitude }}', '{{ marker.longitude }}', '{{ marker.icon }}', '{{ marker.name }}');
+        {% endfor %}
+	{% endif %}
 
-	let bounds = new L.LatLngBounds(coordinates);
-	map.fitBounds(bounds, {maxZoom : {{ zoom }}});
+	if (!coordinates.flat().length) {
+		map.setView(new L.LatLng({{ center }}), {{ zoom }})
+	}
+	else {
+		let bounds = new L.LatLngBounds(coordinates);
+		map.fitBounds(bounds, {maxZoom : {{ zoom }}});
+	}
 
 });
 </script>

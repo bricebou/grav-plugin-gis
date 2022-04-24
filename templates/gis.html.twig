@@ -3,9 +3,6 @@
 {% block content %}
     {{ page.content|raw }}
 
+	{{ gis() }}
 
-	{{ gis({'height': 320}) }}
-
-
-	{{ gis({'height': 120, 'center':[51,1], 'zoom':19, 'markers': [{'name': 'Test', 'icon': 'pink', 'latitude': '51.505', 'longitude': '-0.093'}]}) }}
 {% endblock %}

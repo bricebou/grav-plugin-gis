@@ -106,21 +106,26 @@ class GISPlugin extends Plugin
         );
     }
 
+    /**
+     * gisTwigFunction
+     *
+     * @param  array<mixed> $args
+     * @return void
+     */
     public function gisTwigFunction(array $args = [])
     {
+        $center = array_key_exists('center', $args) ? implode(',', $args['center']) : null;
+
         $this->template_vars = [
             'id'            =>      $args['id'] ?? self::$instances,
             'height'        =>      $args['height'] ?? $this->config->get('plugins.gis.public.height'),
-            'center'        =>      $args['center'] ?? $this->config->get('plugins.gis.public.center'),
+            'center'        =>      $center ?? $this->config->get('plugins.gis.public.center'),
             'zoom'          =>      $args['zoom'] ?? $this->config->get('plugins.gis.public.zoom'),
         ];
 
-        $defaultLatLng = explode(',', $this->config->get('plugins.gis.public.center'));
-        $defaultMarker = ['latitude' => $defaultLatLng[0], 'longitude' => $defaultLatLng[1], 'icon' => 'icon'];
-
         $page = $this->grav['page'];
         $header = (array) $page->header();
-        $markers = $args['markers'] ?? $header['markers'] ?? array($defaultMarker);
+        $markers = $args['markers'] ?? $header['markers'] ?? array();
         $this->template_vars['markers'] = $markers;
 
         $output = $this->grav['twig']->twig()->render($this->template_html, $this->template_vars);
