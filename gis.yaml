@@ -1,11 +1,11 @@
-enabled: true
-private:
-  load: true
-  height: 340
-  center: '51.505, -0.093'
-  zoom: 13
-public:
-  load: true
-  height: 340
-  center: '51.505, -0.093'
-  zoom: 13
+enabled: true              #
+private:                   # Private Area
+  load: true               # Loading Leaflet library inside the Private Area
+  height: 340              # Height of the private area maps
+  center: '51.505, -0.093' # Default coordinates for centering private area maps
+  zoom: 13                 # Default zoom for private area maps
+public:                    # Frontend
+  load: true               # Loading Leaflet library on the frontend
+  height: 340              # Default height for frontend maps
+  center: '51.505, -0.093' # Default coordinates for centering frontend maps
+  zoom: 13                 # Default zoom for frontend maps
