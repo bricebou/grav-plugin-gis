@@ -4,6 +4,7 @@ namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
+use Grav\Plugin\GIS\GISPluginDrawMap;
 use Twig_SimpleFunction;
 
 /**
@@ -12,10 +13,6 @@ use Twig_SimpleFunction;
  */
 class GISPlugin extends Plugin
 {
-    private static $instances = 0;
-    private $template_html    = 'partials/leaflet.html.twig';
-    private $template_vars    = [];
-
     /**
      * @return array
      *
@@ -56,8 +53,9 @@ class GISPlugin extends Plugin
         $this->enable([
             // Put your main events here
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
-            'onTwigInitialized' => ['onTwigInitialized', 0],
             'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
+            'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
+            'onTwigInitialized' => ['onTwigInitialized', 0],
             'onTwigTemplatePaths' => ['onTwigTemplatePaths', 0],
         ]);
     }
@@ -95,6 +93,16 @@ class GISPlugin extends Plugin
     }
 
     /**
+     * Initialize configuration
+     *
+     * @param Event $e
+     */
+    public function onShortcodeHandlers()
+    {
+        $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
+    }
+
+    /**
      * onTwigInitialized
      *
      * @return void
@@ -110,29 +118,20 @@ class GISPlugin extends Plugin
      * gisTwigFunction
      *
      * @param  array<mixed> $args
-     * @return void
+     * @return string
      */
     public function gisTwigFunction(array $args = [])
     {
-        $center = array_key_exists('center', $args) ? implode(',', $args['center']) : null;
+        if (array_key_exists('center', $args)) {
+            $args['center'] = implode(',', $args['center']);
+        }
 
-        $this->template_vars = [
-            'id'            =>      $args['id'] ?? self::$instances,
-            'height'        =>      $args['height'] ?? $this->config->get('plugins.gis.public.height'),
-            'center'        =>      $center ?? $this->config->get('plugins.gis.public.center'),
-            'zoom'          =>      $args['zoom'] ?? $this->config->get('plugins.gis.public.zoom'),
-        ];
+        if (array_key_exists('markers', $args)) {
+            $args['markers'] = !$args['markers'] ? [] : $args['markers'];
+        }
 
-        $page = $this->grav['page'];
-        $header = (array) $page->header();
-        $markers = $args['markers'] ?? $header['markers'] ?? array();
-        $this->template_vars['markers'] = $markers;
-
-        $output = $this->grav['twig']->twig()->render($this->template_html, $this->template_vars);
-
-        self::$instances++;
-
-        return $output;
+        $map = new GisPluginDrawMap();
+        return $map->drawMap($args);
     }
 
     /**
