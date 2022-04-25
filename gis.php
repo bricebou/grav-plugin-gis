@@ -27,8 +27,6 @@ class GISPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
-                // Uncomment following line when plugin requires Grav < 1.7
-                // ['autoload', 100000],
                 ['onPluginsInitialized', 0]
             ]
         ];
@@ -72,7 +70,7 @@ class GISPlugin extends Plugin
 
             $center = $this->config->get('plugins.gis.private.center');
             $zoom = $this->config->get('plugins.gis.private.zoom');
-            $this->grav['assets']->addJs('plugins://' . $this->name . '/js/admin.geolocation.js', ['loading' => 'defer', 'zoom' => $zoom, 'center' => $center ]);
+            $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/admin.geolocation.js', ['loading' => 'defer', 'zoom' => $zoom, 'center' => $center ]);
         }
 
         if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
@@ -156,10 +154,15 @@ class GISPlugin extends Plugin
         $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.min.css');
     }
 
+    /**
+     * markersList
+     *
+     * @return array $options
+     */
     public static function markersList()
     {
         $options = [];
-        $icons = glob(dirname(__FILE__) . '/lib/leaflet/images/marker-*-2x.png');
+        $icons = glob(dirname(__FILE__) . '/assets/images/marker-*-2x.png');
 
         foreach ($icons as $key => $value) {
             $matches = [];

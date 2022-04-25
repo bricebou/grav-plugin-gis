@@ -26,11 +26,13 @@ class GISPluginShortcode extends Shortcode
                 ];
             }
 
-            $args['id'] = $sc->getParameter('id') ?? null;
-            $args['height'] = $sc->getParameter('height') ?? null;
-            $args['center'] = $sc->getParameter('center') ?? null;
-            $args['zoom'] = $sc->getParameter('zoom') ?? null;
-            $args['markers'] = $markers;
+            $args = [
+                'id' => $sc->getParameter('id') ?? null,
+                'height' => $sc->getParameter('height') ?? null,
+                'center' => $sc->getParameter('center') ?? null,
+                'zoom' => $sc->getParameter('zoom') ?? null,
+                'markers' => $markers
+            ];
 
             $map = new GisPluginDrawMap();
             return $map->drawMap($args);

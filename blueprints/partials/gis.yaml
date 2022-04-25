@@ -9,8 +9,6 @@ form:
         .name:
           type: text
           label: PLUGIN_GIS.MARKER_NAME
-          validate:
-            required: true
         .icon:
           type: select
           label: PLUGIN_GIS.MARKER_IMAGE

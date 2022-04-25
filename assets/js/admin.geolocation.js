@@ -34,7 +34,7 @@ function appendLeafletMap(node, lat, lng, icon) {
 	if (lat.value && lng.value) {
 		let string = lat.value + ',' + lng.value;
 
-		let markerIcon = 'icon';
+		let markerIcon = 'blue';
 		if (icon.value) {
 			markerIcon = icon.value;
 		}
@@ -58,8 +58,8 @@ function appendLeafletMap(node, lat, lng, icon) {
 			icon = 'icon';
 		}
 		let gisIcon = L.icon({
-			iconUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '.png',
-			iconRetinaUrl: '/user/plugins/gis/lib/leaflet/images/marker-' + icon + '-2x.png',
+			iconUrl: '/user/plugins/gis/assets/images/marker-' + icon + '.png',
+			iconRetinaUrl: '/user/plugins/gis/assets/images/marker-' + icon + '-2x.png',
 			shadowUrl: '/user/plugins/gis/lib/leaflet/images/marker-shadow.png',
 			iconSize:[25,41],
 			iconAnchor:[12,41],
