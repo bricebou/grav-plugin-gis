@@ -27,7 +27,7 @@ class GISPluginDrawMap
 
         $page = Grav::instance()['page'];
         $header = (array) $page->header();
-        $this->template_vars['markers'] = $params['markers'] ?? $header['markers'];
+        $this->template_vars['markers'] = $params['markers'] ?? $header['markers'] ?? [];
 
         $output = Grav::instance()['twig']->twig()->render($this->template_html, $this->template_vars);
 
