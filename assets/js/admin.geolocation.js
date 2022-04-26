@@ -55,7 +55,7 @@ function appendLeafletMap(node, lat, lng, icon) {
 
 	function addMarker(latlng, icon) {
 		if (!icon) {
-			icon = 'icon';
+			icon = 'blue';
 		}
 		let gisIcon = L.icon({
 			iconUrl: '/user/plugins/gis/assets/images/marker-' + icon + '.png',
