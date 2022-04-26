@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		let latlng = new L.LatLng(latFloat, lonFloat);
 
 		const markerOptions = {
-			draggable: true,
+			draggable: false,
 			icon: gisIcon,
 		}
 		marker = L.marker(latlng, markerOptions).addTo(map);
