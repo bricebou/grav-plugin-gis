@@ -1,7 +1,7 @@
 name: GIS
 slug: gis
 type: plugin
-version: 0.1.0
+version: 0.1.2
 description: This plugin, using the Leaflet javascript library, aims to provide a simple way to geolocate contents and to display interactive maps.
 icon: map-o
 author:
