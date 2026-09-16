@@ -74,11 +74,19 @@ will display a simple map centered and zoomed accordingly to the plugin settings
 [gis height=220 zoom=9 center=34.23,1.43 /]
 ```
 
-You can add some markers to your map, using multiple `markerN` arguments:
+You can add some markers to your map, using multiple `markerN` arguments. Each one takes a name, a latitude, a longitude and an icon:
 
 ```
-[gis height=320 marker1="'Test 1', 43, 2, pink" marker2="'Test 2', 44, 1, orange" /]
+[gis height=320 marker1="Test 1, 43, 2, pink" marker2="Test 2, 44, 1, orange" /]
 ```
+
+The icon is optional and falls back to `blue`:
+
+```
+[gis height=320 marker1="Test 1, 43, 2" /]
+```
+
+Marker names are displayed in a popup when the marker is clicked. A marker whose latitude or longitude isn't a number is skipped, so a typo in one marker doesn't prevent the others, nor the map itself, from being displayed.
 
 The displayed maps are automatically centered and zoomed to fit all markers.
 
@@ -86,7 +94,7 @@ The displayed maps are automatically centered and zoomed to fit all markers.
 
 #### **Inside your templates**
 
-The plugin provides the `{{ gis() }}` Twig function. Without parameters, it displays a map (which height is taken from the plugin settings) and populate it with markers, based on the page frontmatter. If there isn't any marker associated to the page, the map is centered and zoomd based on the plugin configuration.
+The plugin provides the `{{ gis() }}` Twig function. Without parameters, it displays a map (which height is taken from the plugin settings) and populate it with markers, based on the page frontmatter. If there isn't any marker associated to the page, the map is centered and zoomed based on the plugin configuration.
 
 You can specify the height of the map :
 

@@ -4,6 +4,7 @@ namespace Grav\Plugin;
 
 use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
+use Grav\Common\Utils;
 use Grav\Plugin\GIS\GISPluginDrawMap;
 use Twig_SimpleFunction;
 
@@ -51,6 +52,7 @@ class GISPlugin extends Plugin
         $this->enable([
             // Put your main events here
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
+            'onBuildTwigSandboxPolicy' => ['onBuildTwigSandboxPolicy', 0],
             'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
             'onShortcodeHandlers' => ['onShortcodeHandlers', 0],
             'onTwigInitialized' => ['onTwigInitialized', 0],
@@ -70,12 +72,39 @@ class GISPlugin extends Plugin
 
             $center = $this->config->get('plugins.gis.private.center');
             $zoom = $this->config->get('plugins.gis.private.zoom');
-            $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/admin.geolocation.js', ['loading' => 'defer', 'zoom' => $zoom, 'center' => $center ]);
+            $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/admin.geolocation.js', [
+                'loading' => 'defer',
+                'zoom' => $zoom,
+                'center' => $center,
+                'icons' => $this->assetsUrl('assets/images'),
+                'shadow' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png')
+            ]);
         }
 
         if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
             $this->loadLeaflet();
         }
+    }
+
+    /**
+     * onBuildTwigSandboxPolicy
+     *
+     * Grav 2 runs editor authored Twig through a sandbox that only exposes an
+     * allowlist, so `{{ gis() }}` written in a page fails silently until the
+     * function is declared here. Exposing it to content authors is the same
+     * trust boundary as registering it in the first place.
+     *
+     * The event doesn't exist on Grav 1.x, where subscribing to it is a no-op.
+     *
+     * @param  mixed $event
+     * @return void
+     */
+    public function onBuildTwigSandboxPolicy($event): void
+    {
+        // Read-modify-write: the event arguments are returned by value
+        $functions = $event['functions'];
+        $functions[] = 'gis';
+        $event['functions'] = $functions;
     }
 
     /**
@@ -120,7 +149,7 @@ class GISPlugin extends Plugin
      */
     public function gisTwigFunction(array $args = [])
     {
-        if (array_key_exists('center', $args)) {
+        if (array_key_exists('center', $args) && is_array($args['center'])) {
             $args['center'] = implode(',', $args['center']);
         }
 
@@ -144,6 +173,20 @@ class GISPlugin extends Plugin
     }
 
     /**
+     * Resolves a plugin asset to a public URL
+     *
+     * Goes through the locator so the plugin keeps working when Grav is served
+     * from a subdirectory or plugins live outside user/plugins
+     *
+     * @param  string $path Path relative to the plugin root
+     * @return string
+     */
+    private function assetsUrl(string $path): string
+    {
+        return (string) Utils::url('plugins://' . $this->name . '/' . $path, false, true);
+    }
+
+    /**
      * loadLeaflet
      *
      * @return void
@@ -151,7 +194,10 @@ class GISPlugin extends Plugin
     private function loadLeaflet(): void
     {
         $this->grav['assets']->addJs('plugins://' . $this->name . '/lib/leaflet/leaflet.js', ['loading' => 'defer']);
-        $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.min.css');
+        $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.css');
+        // Loaded after Leaflet's own stylesheet: it undoes what a theme's
+        // [role="button"] reset does to markers and controls
+        $this->grav['assets']->addCss('plugins://' . $this->name . '/assets/css/gis.css');
     }
 
     /**

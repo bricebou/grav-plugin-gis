@@ -1,5 +1,7 @@
 const center = document.currentScript.getAttribute('center');
 const zoom = document.currentScript.getAttribute('zoom');
+const iconsUrl = document.currentScript.getAttribute('icons');
+const shadowUrl = document.currentScript.getAttribute('shadow');
 
 function commaStringToLatLng(string) {
 	let latlng = string.split(',');
@@ -58,9 +60,9 @@ function appendLeafletMap(node, lat, lng, icon) {
 			icon = 'blue';
 		}
 		let gisIcon = L.icon({
-			iconUrl: '/user/plugins/gis/assets/images/marker-' + icon + '.png',
-			iconRetinaUrl: '/user/plugins/gis/assets/images/marker-' + icon + '-2x.png',
-			shadowUrl: '/user/plugins/gis/lib/leaflet/images/marker-shadow.png',
+			iconUrl: iconsUrl + '/marker-' + icon + '.png',
+			iconRetinaUrl: iconsUrl + '/marker-' + icon + '-2x.png',
+			shadowUrl: shadowUrl,
 			iconSize:[25,41],
 			iconAnchor:[12,41],
 			popupAnchor:[1,-34],

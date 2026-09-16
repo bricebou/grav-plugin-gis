@@ -1,0 +1,46 @@
+/*
+ * Leaflet puts role="button" and tabindex="0" on marker icons and on control
+ * buttons, for keyboard access. CSS resets style [role="button"] the same way
+ * they style a <button>, so a theme shipping one (Pico, Tailwind preflight and
+ * friends) paints every marker with a background and rounds its corners.
+ *
+ * Leaflet only styles what it needs, so wherever it sets nothing the reset
+ * wins unopposed. The rules below undo exactly those properties and leave the
+ * rest to Leaflet.
+ */
+
+/* Marker and shadow images: Leaflet styles none of this */
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img {
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* Control buttons: Leaflet sets the background, size, colour and its own
+ * bottom separator, but leaves the other borders, padding and effects alone
+ */
+.leaflet-container .leaflet-bar a {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    padding: 0;
+    outline: 0;
+    box-shadow: none;
+    transition: none;
+}
+
+/* Leaflet rounds only the outer corners of a bar's first and last button,
+ * and a reset fills in the ones it leaves alone
+ */
+.leaflet-container .leaflet-bar a:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.leaflet-container .leaflet-bar a:last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
