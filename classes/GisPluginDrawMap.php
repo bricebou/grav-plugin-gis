@@ -4,6 +4,7 @@ namespace Grav\Plugin\Gis;
 
 use Grav\Common\Grav;
 use Grav\Common\Utils;
+use Grav\Plugin\GisPlugin;
 
 class GisPluginDrawMap
 {
@@ -13,6 +14,8 @@ class GisPluginDrawMap
     private const FALLBACK_ZOOM = 13;
     /** @var int Map height used when neither the call nor the config provide a usable one */
     private const FALLBACK_HEIGHT = 340;
+    /** @var string Icon used when a marker doesn't specify a known one */
+    private const DEFAULT_ICON = 'blue';
 
     private $template_html    = 'partials/leaflet.html.twig';
     private $template_vars    = [];
@@ -27,9 +30,8 @@ class GisPluginDrawMap
     {
         $config = Grav::instance()['config'];
 
-        // Every value below lands inside an inline script or an HTML attribute,
-        // where escaping alone wouldn't help: a payload made of plain characters
-        // goes through untouched. So they are validated rather than interpolated
+        // Every value below ends up in the map's data attribute, then in
+        // Leaflet calls: they are validated rather than passed through
         $center = $this->parseCenter($params['center'] ?? null)
             ?? $this->parseCenter($config->get('plugins.gis.public.center'))
             ?? self::FALLBACK_CENTER;
@@ -42,21 +44,35 @@ class GisPluginDrawMap
             ?? $this->parseInt($config->get('plugins.gis.public.height'))
             ?? self::FALLBACK_HEIGHT;
 
+        $page = Grav::instance()['page'];
+        $header = (array) $page->header();
+        $markers = $this->parseMarkers($params['markers'] ?? $header['markers'] ?? []);
+
+        // Resolved through the locator so the plugin keeps working when Grav
+        // is served from a subdirectory or plugins live outside user/plugins
+        $icons_url = Utils::url('plugins://gis/assets/images', false, true);
+        $shadow_url = Utils::url('plugins://gis/lib/leaflet/images/marker-shadow.png', false, true);
+
         $this->template_vars = [
             'id'            =>      $this->parseId($params['id'] ?? null) ?? $this->uniqueId(),
             'height'        =>      $height,
+            // Everything assets/js/gis.js needs to draw the map
+            'map'           =>      [
+                'center'    =>      $center,
+                'zoom'      =>      $zoom,
+                'icons'     =>      $icons_url,
+                'shadow'    =>      $shadow_url,
+                'markers'   =>      $markers,
+            ],
+            // Still handed over so a theme overriding the template with the
+            // former inline script keeps a working map
             'center_lat'    =>      $center[0],
             'center_lng'    =>      $center[1],
             'zoom'          =>      $zoom,
-            // Resolved through the locator so the plugin keeps working when Grav
-            // is served from a subdirectory or plugins live outside user/plugins
-            'icons_url'     =>      Utils::url('plugins://gis/assets/images', false, true),
-            'shadow_url'    =>      Utils::url('plugins://gis/lib/leaflet/images/marker-shadow.png', false, true),
+            'markers'       =>      $markers,
+            'icons_url'     =>      $icons_url,
+            'shadow_url'    =>      $shadow_url,
         ];
-
-        $page = Grav::instance()['page'];
-        $header = (array) $page->header();
-        $this->template_vars['markers'] = $params['markers'] ?? $header['markers'] ?? [];
 
         return Grav::instance()['twig']->twig()->render($this->template_html, $this->template_vars);
     }
@@ -75,6 +91,53 @@ class GisPluginDrawMap
     private function uniqueId(): string
     {
         return bin2hex(random_bytes(4));
+    }
+
+    /**
+     * Keeps the markers Leaflet can draw, whatever their origin
+     *
+     * The shortcode parses its own arguments, but markers coming from the page
+     * frontmatter or from the Twig function arrive as they were typed
+     *
+     * @param  mixed $markers
+     * @return array<array<string, mixed>>
+     */
+    private function parseMarkers($markers): array
+    {
+        if (!is_array($markers)) {
+            return [];
+        }
+
+        $icons = array_keys(GisPlugin::markersList());
+        $parsed = [];
+
+        foreach ($markers as $marker) {
+            if (!is_array($marker)) {
+                continue;
+            }
+
+            $latitude = $marker['latitude'] ?? null;
+            $longitude = $marker['longitude'] ?? null;
+
+            // Leaflet throws on non numeric coordinates, which would take the
+            // whole map down: skip the faulty marker and keep drawing the others
+            if (!is_numeric($latitude) || !is_numeric($longitude)) {
+                continue;
+            }
+
+            $name = $marker['name'] ?? '';
+            $icon = $marker['icon'] ?? '';
+
+            $parsed[] = [
+                'name' => is_scalar($name) ? trim((string) $name) : '',
+                'latitude' => (float) $latitude,
+                'longitude' => (float) $longitude,
+                // An unknown icon would only point at a missing image
+                'icon' => in_array($icon, $icons, true) ? $icon : self::DEFAULT_ICON,
+            ];
+        }
+
+        return $parsed;
     }
 
     /**

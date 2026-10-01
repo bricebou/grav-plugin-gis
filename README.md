@@ -86,7 +86,7 @@ The icon is optional and falls back to `blue`:
 [gis height=320 marker1="Test 1, 43, 2" /]
 ```
 
-Marker names are displayed in a popup when the marker is clicked. A marker whose latitude or longitude isn't a number is skipped, so a typo in one marker doesn't prevent the others, nor the map itself, from being displayed.
+Marker names are displayed in a popup when the marker is clicked, as plain text: HTML in a name is shown, not interpreted. A marker whose latitude or longitude isn't a number is skipped, so a typo in one marker doesn't prevent the others, nor the map itself, from being displayed.
 
 The displayed maps are automatically centered and zoomed to fit all markers.
 
@@ -113,6 +113,10 @@ You can also pass an array of markers:
 ```twig
 {{ gis({'height': 240, 'markers': [{'name': 'Test', 'icon': 'pink', 'latitude': '51.505', 'longitude': '-0.093'},{'name': 'Test2', 'icon': 'orange', 'latitude': '51', 'longitude': '-0.1'}]}) }}
 ```
+
+#### **Overriding the map template**
+
+`partials/leaflet.html.twig` renders an empty container whose `data-gis` attribute holds the map, drawn by `assets/js/gis.js`. Maps added to the page after it loaded can be drawn with `GisPlugin.init(element)`.
 
 #### **Adding geolocation to page blueprints**
 

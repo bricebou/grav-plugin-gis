@@ -1,7 +1,13 @@
 # v0.2.1
 ## 10/01/2026
 
-1. [](#improved)
+1. [](#bugfix)
+    * [security] Marker names are shown as plain text in their popup. Leaflet inserts a popup's string content as HTML, so a name such as `<img src=x onerror=…>`, typed in a shortcode or in a page's frontmatter, ran script in a visitor's browser once the marker was clicked
+    * Markers coming from the page frontmatter or the Twig function are validated server side, like the shortcode ones: a marker with a non numeric coordinate is skipped, and an unknown icon falls back to `blue` instead of pointing at a missing image
+
+2. [](#improved)
+    * Maps are drawn by a single `assets/js/gis.js` reading a `data-gis` attribute, instead of an inline script per map: no value is written into a script any more. `GisPlugin.init(element)` draws maps added to the page later
+    * A theme overriding `partials/leaflet.html.twig` keeps receiving the variables of 0.2.0, but should switch to the new template to get the popup fix
     * The namespace and class names are now spelled `Gis` throughout (`Grav\Plugin\Gis\GisPluginDrawMap`, `GisPlugin`, `GisPluginShortcode`). PHP resolves class names regardless of case, so code referring to the former spelling keeps working
 
 # v0.2.0

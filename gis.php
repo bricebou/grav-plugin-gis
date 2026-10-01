@@ -194,6 +194,7 @@ class GisPlugin extends Plugin
     private function loadLeaflet(): void
     {
         $this->grav['assets']->addJs('plugins://' . $this->name . '/lib/leaflet/leaflet.js', ['loading' => 'defer']);
+        $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/gis.js', ['loading' => 'defer']);
         $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.css');
         // Loaded after Leaflet's own stylesheet: it undoes what a theme's
         // [role="button"] reset does to markers and controls
