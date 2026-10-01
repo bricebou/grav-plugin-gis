@@ -68,7 +68,7 @@ class GisPlugin extends Plugin
     public function onAssetsInitialized(): void
     {
         if ($this->isAdmin() && $this->config->get('plugins.gis.private.load')) {
-            $this->loadLeaflet();
+            $this->loadAssets(GisPluginDrawMap::assets());
 
             $center = $this->config->get('plugins.gis.private.center');
             $zoom = $this->config->get('plugins.gis.private.zoom');
@@ -81,8 +81,11 @@ class GisPlugin extends Plugin
             ]);
         }
 
+        // Maps load their assets on their own; this only forces them on every
+        // page, for a theme that draws its own Leaflet maps or renders its
+        // assets before the page content
         if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
-            $this->loadLeaflet();
+            $this->loadAssets(GisPluginDrawMap::assets());
         }
     }
 
@@ -157,6 +160,11 @@ class GisPlugin extends Plugin
             $args['markers'] = !$args['markers'] ? [] : $args['markers'];
         }
 
+        // Rendered again on every request, so the asset manager can be fed
+        // directly. It needs a theme rendering its assets after the content,
+        // as Quark does with its deferred assets block
+        $this->loadAssets(GisPluginDrawMap::assets());
+
         $map = new GisPluginDrawMap();
         return $map->drawMap($args);
     }
@@ -187,18 +195,17 @@ class GisPlugin extends Plugin
     }
 
     /**
-     * loadLeaflet
+     * Adds assets as listed by GisPluginDrawMap::assets()
      *
+     * @param  array<array{0: string, 1: string, 2: array<string, mixed>}> $assets
      * @return void
      */
-    private function loadLeaflet(): void
+    private function loadAssets(array $assets): void
     {
-        $this->grav['assets']->addJs('plugins://' . $this->name . '/lib/leaflet/leaflet.js', ['loading' => 'defer']);
-        $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/gis.js', ['loading' => 'defer']);
-        $this->grav['assets']->addCss('plugins://' . $this->name . '/lib/leaflet/leaflet.css');
-        // Loaded after Leaflet's own stylesheet: it undoes what a theme's
-        // [role="button"] reset does to markers and controls
-        $this->grav['assets']->addCss('plugins://' . $this->name . '/assets/css/gis.css');
+        foreach ($assets as [$type, $path, $options]) {
+            $method = 'add' . ucfirst($type);
+            $this->grav['assets']->$method($path, $options);
+        }
     }
 
     /**

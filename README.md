@@ -46,12 +46,14 @@ private:                   # Private Area
   center: '51.505, -0.093' # Default coordinates for centering private area maps
   zoom: 13                 # Default zoom for private area maps
 public:                    # Frontend
-  load: true               # Loading Leaflet library on the frontend
+  load: false              # Loading Leaflet on every frontend page, not only those showing a map
   height: 340              # Default height for frontend maps
   center: '51.505, -0.093' # Default coordinates for centering frontend maps
   zoom: 13                 # Default zoom for frontend maps
 
 ```
+
+Maps load Leaflet and the plugin's script on their own, on the pages that show one. `public.load` forces them on every page, which only matters for a theme drawing its own Leaflet maps, or one rendering its assets before the page content: `{{ gis() }}` called from a template relies on a deferred assets block, as Quark's.
 
 Note that if you use the Admin Plugin, a file with your configuration named gis.yaml will be saved in the `user/config/plugins/`-folder once the configuration is saved in the Admin.
 

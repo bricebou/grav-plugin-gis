@@ -21,6 +21,27 @@ class GisPluginDrawMap
     private $template_vars    = [];
 
     /**
+     * Assets a frontend map needs, in loading order
+     *
+     * Kept in one place because they are added from two spots: the Twig
+     * function adds them on every request, while the shortcode hands them to
+     * shortcode-core, which stores them alongside the cached page content
+     *
+     * @return array<array{0: string, 1: string, 2: array<string, mixed>}> Type, path and options
+     */
+    public static function assets(): array
+    {
+        return [
+            ['js', 'plugins://gis/lib/leaflet/leaflet.js', ['loading' => 'defer']],
+            ['js', 'plugins://gis/assets/js/gis.js', ['loading' => 'defer']],
+            ['css', 'plugins://gis/lib/leaflet/leaflet.css', []],
+            // Loaded after Leaflet's own stylesheet: it undoes what a theme's
+            // [role="button"] reset does to markers and controls
+            ['css', 'plugins://gis/assets/css/gis.css', []],
+        ];
+    }
+
+    /**
      * drawMap
      *
      * @param  array<mixed> $params

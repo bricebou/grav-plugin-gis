@@ -5,7 +5,7 @@ private:                   # Private Area
   center: '51.505, -0.093' # Default coordinates for centering private area maps
   zoom: 13                 # Default zoom for private area maps
 public:                    # Frontend
-  load: true               # Loading Leaflet library on the frontend
+  load: false              # Loading Leaflet on every frontend page, not only those showing a map
   height: 340              # Default height for frontend maps
   center: '51.505, -0.093' # Default coordinates for centering frontend maps
   zoom: 13                 # Default zoom for frontend maps
