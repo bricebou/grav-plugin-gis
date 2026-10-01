@@ -76,6 +76,12 @@ will display a simple map centered and zoomed accordingly to the plugin settings
 [gis height=220 zoom=9 center=34.23,1.43 /]
 ```
 
+Maps take the full width by default. The `width` argument takes a number of pixels, or a number followed by `px`, `%`, `em`, `rem` or `vw`; anything else is ignored:
+
+```
+[gis width=50% height=220 /]
+```
+
 You can add some markers to your map, using multiple `markerN` arguments. Each one takes a name, a latitude, a longitude and an icon:
 
 ```
@@ -102,6 +108,12 @@ You can specify the height of the map :
 
 ```twig
 {{ gis({'height': 320}) }}
+```
+
+and its width, which accepts the same values as the shortcode's `width` argument:
+
+```twig
+{{ gis({'width': '480px', 'height': 320}) }}
 ```
 
 You can prevent the map from being populated with markers:

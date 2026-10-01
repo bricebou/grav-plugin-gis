@@ -14,6 +14,8 @@ class GisPluginDrawMap
     private const FALLBACK_ZOOM = 13;
     /** @var int Map height used when neither the call nor the config provide a usable one */
     private const FALLBACK_HEIGHT = 340;
+    /** @var string Map width used when the call doesn't provide a usable one */
+    private const FALLBACK_WIDTH = '100%';
     /** @var string Icon used when a marker doesn't specify a known one */
     private const DEFAULT_ICON = 'blue';
 
@@ -76,6 +78,7 @@ class GisPluginDrawMap
 
         $this->template_vars = [
             'id'            =>      $this->parseId($params['id'] ?? null) ?? $this->uniqueId(),
+            'width'         =>      $this->parseWidth($params['width'] ?? null) ?? self::FALLBACK_WIDTH,
             'height'        =>      $height,
             // Everything assets/js/gis.js needs to draw the map
             'map'           =>      [
@@ -186,6 +189,27 @@ class GisPluginDrawMap
     private function parseInt($value): ?int
     {
         return is_numeric($value) ? (int) $value : null;
+    }
+
+    /**
+     * Keeps a width that is safe to drop in the container's style attribute
+     *
+     * @param  mixed $width A number of pixels, or a number followed by `px`, `%`, `em`, `rem` or `vw`
+     * @return string|null Null when the width holds anything else
+     */
+    private function parseWidth($width): ?string
+    {
+        if (!is_scalar($width)) {
+            return null;
+        }
+
+        $width = strtolower(trim((string) $width));
+
+        if (!preg_match('/^(\d+(?:\.\d+)?)(px|%|em|rem|vw)?$/', $width, $matches) || (float) $matches[1] <= 0) {
+            return null;
+        }
+
+        return $matches[1] . ($matches[2] ?? 'px');
     }
 
     /**

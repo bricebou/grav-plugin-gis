@@ -7,7 +7,10 @@
     * The admin geolocation maps now follow the `private.height` setting instead of a fixed 300px
     * A map no longer fails with `L is not defined` on a site where `public.load` is off
 
-2. [](#improved)
+2. [](#new)
+    * The shortcode and the Twig function take a `width` argument: a number of pixels, or a number followed by `px`, `%`, `em`, `rem` or `vw`. Maps still take the full width by default
+
+3. [](#improved)
     * Leaflet and the plugin's assets are only loaded on pages showing a map. The shortcode hands them to shortcode-core so they are added back on pages served from cache. `public.load` now forces them on every page and is off by default
     * Maps are drawn by a single `assets/js/gis.js` reading a `data-gis` attribute, instead of an inline script per map: no value is written into a script any more. `GisPlugin.init(element)` draws maps added to the page later
     * A theme overriding `partials/leaflet.html.twig` keeps receiving the variables of 0.2.0, but should switch to the new template to get the popup fix

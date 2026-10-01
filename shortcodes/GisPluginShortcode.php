@@ -22,6 +22,7 @@ class GisPluginShortcode extends Shortcode
 
             $args = [
                 'id' => $sc->getParameter('id') ?? null,
+                'width' => $sc->getParameter('width') ?? null,
                 'height' => $sc->getParameter('height') ?? null,
                 'center' => $sc->getParameter('center') ?? null,
                 'zoom' => $sc->getParameter('zoom') ?? null,

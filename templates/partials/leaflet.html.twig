@@ -1,2 +1,2 @@
 {# Drawn by assets/js/gis.js, which reads the map out of the data attribute #}
-<div id="leaflet-{{ id }}" class="gis-map" style="width: 100%; height: {{ height }}px;" data-gis="{{ map|json_encode|e('html_attr') }}"></div>
+<div id="leaflet-{{ id }}" class="gis-map" style="width: {{ width }}; height: {{ height }}px;" data-gis="{{ map|json_encode|e('html_attr') }}"></div>
