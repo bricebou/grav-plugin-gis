@@ -4,6 +4,7 @@
 1. [](#bugfix)
     * [security] Marker names are shown as plain text in their popup. Leaflet inserts a popup's string content as HTML, so a name such as `<img src=x onerror=…>`, typed in a shortcode or in a page's frontmatter, ran script in a visitor's browser once the marker was clicked
     * Markers coming from the page frontmatter or the Twig function are validated server side, like the shortcode ones: a marker with a non numeric coordinate is skipped, and an unknown icon falls back to `blue` instead of pointing at a missing image
+    * The admin geolocation maps now follow the `private.height` setting instead of a fixed 300px
     * A map no longer fails with `L is not defined` on a site where `public.load` is off
 
 2. [](#improved)

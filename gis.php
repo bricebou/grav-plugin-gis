@@ -76,6 +76,7 @@ class GisPlugin extends Plugin
                 'loading' => 'defer',
                 'zoom' => $zoom,
                 'center' => $center,
+                'height' => $this->config->get('plugins.gis.private.height'),
                 'icons' => $this->assetsUrl('assets/images'),
                 'shadow' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png')
             ]);

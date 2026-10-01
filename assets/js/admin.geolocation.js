@@ -2,6 +2,7 @@ const center = document.currentScript.getAttribute('center');
 const zoom = document.currentScript.getAttribute('zoom');
 const iconsUrl = document.currentScript.getAttribute('icons');
 const shadowUrl = document.currentScript.getAttribute('shadow');
+const height = parseInt(document.currentScript.getAttribute('height'), 10) || 340;
 
 function commaStringToLatLng(string) {
 	let latlng = string.split(',');
@@ -21,7 +22,7 @@ function appendLeafletMap(node, lat, lng, icon) {
 
 	let mapContainer = document.createElement('div');
 	mapContainer.classList.add('leaflet-map');
-	mapContainer.style.height = '300px';
+	mapContainer.style.height = height + 'px';
 
 	node.appendChild(mapContainer);
 
