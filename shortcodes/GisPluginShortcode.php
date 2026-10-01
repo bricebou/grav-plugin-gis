@@ -2,10 +2,10 @@
 
 namespace Grav\Plugin\Shortcodes;
 
-use Grav\Plugin\GIS\GISPluginDrawMap;
+use Grav\Plugin\Gis\GisPluginDrawMap;
 use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
-class GISPluginShortcode extends Shortcode
+class GisPluginShortcode extends Shortcode
 {
     /** @var string Icon used when a marker doesn't specify one */
     private const DEFAULT_ICON = 'blue';

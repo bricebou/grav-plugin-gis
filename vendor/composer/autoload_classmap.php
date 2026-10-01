@@ -7,5 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
-    'Grav\\Plugin\\GISPlugin' => $baseDir . '/gis.php',
+    'Grav\\Plugin\\GisPlugin' => $baseDir . '/gis.php',
 );

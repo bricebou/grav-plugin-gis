@@ -5,7 +5,7 @@ namespace Grav\Plugin\Gis;
 use Grav\Common\Grav;
 use Grav\Common\Utils;
 
-class GISPluginDrawMap
+class GisPluginDrawMap
 {
     /** @var array<float> Coordinates used when neither the call nor the config provide usable ones */
     private const FALLBACK_CENTER = [51.505, -0.093];

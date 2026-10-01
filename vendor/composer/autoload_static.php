@@ -9,12 +9,12 @@ class ComposerStaticInit89e2603e394e9d6e336e99fc82369589
     public static $prefixLengthsPsr4 = array (
         'G' =>
         array (
-            'Grav\\Plugin\\GIS\\' => 16,
+            'Grav\\Plugin\\Gis\\' => 16,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'Grav\\Plugin\\GIS\\' =>
+        'Grav\\Plugin\\Gis\\' =>
         array (
             0 => __DIR__ . '/../..' . '/classes',
         ),
@@ -22,7 +22,7 @@ class ComposerStaticInit89e2603e394e9d6e336e99fc82369589
 
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Grav\\Plugin\\GISPlugin' => __DIR__ . '/../..' . '/gis.php',
+        'Grav\\Plugin\\GisPlugin' => __DIR__ . '/../..' . '/gis.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

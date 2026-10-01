@@ -5,14 +5,14 @@ namespace Grav\Plugin;
 use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
 use Grav\Common\Utils;
-use Grav\Plugin\GIS\GISPluginDrawMap;
+use Grav\Plugin\Gis\GisPluginDrawMap;
 use Twig_SimpleFunction;
 
 /**
- * Class GISPlugin
+ * Class GisPlugin
  * @package Grav\Plugin
  */
-class GISPlugin extends Plugin
+class GisPlugin extends Plugin
 {
     /**
      * @return array

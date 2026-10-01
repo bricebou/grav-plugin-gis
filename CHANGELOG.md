@@ -1,3 +1,9 @@
+# v0.2.1
+## 10/01/2026
+
+1. [](#improved)
+    * The namespace and class names are now spelled `Gis` throughout (`Grav\Plugin\Gis\GisPluginDrawMap`, `GisPlugin`, `GisPluginShortcode`). PHP resolves class names regardless of case, so code referring to the former spelling keeps working
+
 # v0.2.0
 ## 09/16/2026
 

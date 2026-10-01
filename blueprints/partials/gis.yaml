@@ -12,7 +12,7 @@ form:
         .icon:
           type: select
           label: PLUGIN_GIS.MARKER_IMAGE
-          data-options@: '\Grav\Plugin\GISPlugin::markersList'
+          data-options@: '\Grav\Plugin\GisPlugin::markersList'
         .latitude:
           type: text
           label: PLUGIN_GIS.LATITUDE
