@@ -13,6 +13,7 @@
     "sort-packages": true
   },
   "require-dev": {
+    "rector/rector": "^2",
     "symplify/easy-coding-standard": "^13"
   }
 }

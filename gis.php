@@ -109,15 +109,15 @@ class GisPlugin extends Plugin
     /**
      * Initialize configuration
      */
-    public function onShortcodeHandlers()
+    public function onShortcodeHandlers(): void
     {
         $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
     }
 
-    public function onTwigInitialized()
+    public function onTwigInitialized(): void
     {
         $this->grav['twig']->twig()->addFunction(
-            new TwigFunction('gis', [$this, 'gisTwigFunction'], [
+            new TwigFunction('gis', $this->gisTwigFunction(...), [
                 'is_safe' => ['html'],
             ])
         );
@@ -188,9 +188,9 @@ class GisPlugin extends Plugin
     public static function markersList()
     {
         $options = [];
-        $icons = glob(dirname(__FILE__) . '/assets/images/marker-*-2x.png');
+        $icons = glob(__DIR__ . '/assets/images/marker-*-2x.png');
 
-        foreach ($icons as $key => $value) {
+        foreach ($icons as $value) {
             $matches = [];
             preg_match('/marker-([a-z]*)-2x.png/', $value, $matches);
 

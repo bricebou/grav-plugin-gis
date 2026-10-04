@@ -7,7 +7,7 @@ use Thunder\Shortcode\Shortcode\ShortcodeInterface;
 
 class GisPluginShortcode extends Shortcode
 {
-    public function init()
+    public function init(): void
     {
         $this->shortcode->getHandlers()
             ->add('gis', function (ShortcodeInterface $sc) {
@@ -17,7 +17,7 @@ class GisPluginShortcode extends Shortcode
                 $parameters = $sc->getParameters();
                 $parametersMarkersKeys = preg_grep('/^marker[0-9]*$/i', array_keys($parameters));
 
-                foreach ($parametersMarkersKeys as $key => $value) {
+                foreach ($parametersMarkersKeys as $value) {
                     $markers[] = $this->parseMarker($parameters[$value]);
                 }
 
@@ -56,7 +56,7 @@ class GisPluginShortcode extends Shortcode
         // Markdown turns the surrounding double quotes into entities whenever the
         // shortcode isn't alone on its line, so decode before splitting
         $properties = explode(',', html_entity_decode((string) $parameter, ENT_QUOTES, 'UTF-8'));
-        $properties = array_map('trim', $properties);
+        $properties = array_map(trim(...), $properties);
 
         return [
             // The documented syntax wraps the name in single quotes, drop them

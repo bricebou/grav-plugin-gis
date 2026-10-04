@@ -175,6 +175,8 @@ The development tools live in `tools/`, with their own `composer.json`, so the `
 composer tools
 composer ecs:check   # report coding standard violations
 composer ecs         # fix them
+composer rector:check  # report the refactorings Rector would apply
+composer rector        # apply them
 ```
 
 ## Credits

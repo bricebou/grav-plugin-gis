@@ -11,31 +11,31 @@ class GisPluginDrawMap
     /**
      * @var array<float> Coordinates used when neither the call nor the config provide usable ones
      */
-    private const FALLBACK_CENTER = [51.505, -0.093];
+    private const array FALLBACK_CENTER = [51.505, -0.093];
 
     /**
      * @var int Zoom used when neither the call nor the config provide a usable one
      */
-    private const FALLBACK_ZOOM = 13;
+    private const int FALLBACK_ZOOM = 13;
 
     /**
      * @var int Map height used when neither the call nor the config provide a usable one
      */
-    private const FALLBACK_HEIGHT = 340;
+    private const int FALLBACK_HEIGHT = 340;
 
     /**
      * @var string Map width used when the call doesn't provide a usable one
      */
-    private const FALLBACK_WIDTH = '100%';
+    private const string FALLBACK_WIDTH = '100%';
 
     /**
      * @var string Icon used when a marker doesn't specify a known one
      */
-    private const DEFAULT_ICON = 'blue';
+    private const string DEFAULT_ICON = 'blue';
 
-    private $template_html = 'partials/leaflet.html.twig';
+    private string $template_html = 'partials/leaflet.html.twig';
 
-    private $template_vars = [];
+    private array $template_vars = [];
 
     /**
      * Assets a frontend map needs, in loading order
@@ -190,7 +190,7 @@ class GisPluginDrawMap
     private function parseCenter($center): ?array
     {
         $parts = is_array($center) ? $center : explode(',', (string) $center);
-        $parts = array_map('trim', array_map('strval', $parts));
+        $parts = array_map(trim(...), array_map(strval(...), $parts));
 
         if (count($parts) !== 2 || ! is_numeric($parts[0]) || ! is_numeric($parts[1])) {
             return null;

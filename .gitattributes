@@ -5,4 +5,5 @@
 /package.json export-ignore
 /package-lock.json export-ignore
 /ecs.php export-ignore
+/rector.php export-ignore
 /tools export-ignore

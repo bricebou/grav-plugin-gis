@@ -24,7 +24,9 @@
   "scripts": {
     "tools": "composer --working-dir=tools install",
     "ecs": "tools/vendor/bin/ecs check --fix",
-    "ecs:check": "tools/vendor/bin/ecs check"
+    "ecs:check": "tools/vendor/bin/ecs check",
+    "rector": "tools/vendor/bin/rector process",
+    "rector:check": "tools/vendor/bin/rector process --dry-run"
   },
   "config": {
     "platform": {
