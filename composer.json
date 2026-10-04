@@ -21,6 +21,11 @@
     },
     "classmap":  ["gis.php"]
   },
+  "scripts": {
+    "tools": "composer --working-dir=tools install",
+    "ecs": "tools/vendor/bin/ecs check --fix",
+    "ecs:check": "tools/vendor/bin/ecs check"
+  },
   "config": {
     "platform": {
       "php": "8.3"

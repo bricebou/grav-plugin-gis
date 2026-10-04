@@ -1,0 +1,18 @@
+{
+  "name": "bricebou/gis-tools",
+  "description": "Development tools of the GIS plugin, kept apart so the shipped vendor/ only holds the autoloader",
+  "type": "project",
+  "license": "MIT",
+  "require": {
+    "php": ">=8.3"
+  },
+  "config": {
+    "platform": {
+      "php": "8.3"
+    },
+    "sort-packages": true
+  },
+  "require-dev": {
+    "symplify/easy-coding-standard": "^13"
+  }
+}

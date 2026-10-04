@@ -167,6 +167,16 @@ npm run leaflet
 
 `npm audit` reports advisories affecting the bundled version. `lib/` is left out of opengrep through `.semgrepignore`, so the scan covers the plugin's own code.
 
+### Coding standards
+
+The development tools live in `tools/`, with their own `composer.json`, so the `vendor/` folder shipped with the plugin only ever holds the autoloader. Install them once, then run them through Composer scripts:
+
+```
+composer tools
+composer ecs:check   # report coding standard violations
+composer ecs         # fix them
+```
+
 ## Credits
 
 - [Leaflet javascript library](https://leafletjs.com/)

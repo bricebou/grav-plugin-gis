@@ -8,10 +8,6 @@ use Grav\Common\Utils;
 use Grav\Plugin\Gis\GisPluginDrawMap;
 use Twig\TwigFunction;
 
-/**
- * Class GisPlugin
- * @package Grav\Plugin
- */
 class GisPlugin extends Plugin
 {
     /**
@@ -28,15 +24,13 @@ class GisPlugin extends Plugin
     {
         return [
             'onPluginsInitialized' => [
-                ['onPluginsInitialized', 0]
-            ]
+                ['onPluginsInitialized', 0],
+            ],
         ];
     }
 
     /**
      * Composer autoload
-     *
-     * @return ClassLoader
      */
     public function autoload(): ClassLoader
     {
@@ -60,11 +54,6 @@ class GisPlugin extends Plugin
         ]);
     }
 
-    /**
-     * onAssetsInitialized
-     *
-     * @return void
-     */
     public function onAssetsInitialized(): void
     {
         if ($this->isAdmin() && $this->config->get('plugins.gis.private.load')) {
@@ -78,28 +67,25 @@ class GisPlugin extends Plugin
                 'center' => $center,
                 'height' => $this->config->get('plugins.gis.private.height'),
                 'icons' => $this->assetsUrl('assets/images'),
-                'shadow' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png')
+                'shadow' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png'),
             ]);
         }
 
         // Maps load their assets on their own; this only forces them on every
         // page, for a theme that draws its own Leaflet maps or renders its
         // assets before the page content
-        if (!$this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
+        if (! $this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
             $this->loadAssets(GisPluginDrawMap::assets());
         }
     }
 
     /**
-     * onBuildTwigSandboxPolicy
-     *
      * Grav 2 runs editor authored Twig through a sandbox that only exposes an
      * allowlist, so `{{ gis() }}` written in a page fails silently until the
      * function is declared here. Exposing it to content authors is the same
      * trust boundary as registering it in the first place.
      *
      * @param  mixed $event
-     * @return void
      */
     public function onBuildTwigSandboxPolicy($event): void
     {
@@ -113,7 +99,6 @@ class GisPlugin extends Plugin
      * onGetPageBlueprints
      *
      * @param  mixed $event
-     * @return void
      */
     public function onGetPageBlueprints($event): void
     {
@@ -123,29 +108,22 @@ class GisPlugin extends Plugin
 
     /**
      * Initialize configuration
-     *
-     * @param Event $e
      */
     public function onShortcodeHandlers()
     {
         $this->grav['shortcode']->registerAllShortcodes(__DIR__ . '/shortcodes');
     }
 
-    /**
-     * onTwigInitialized
-     *
-     * @return void
-     */
     public function onTwigInitialized()
     {
         $this->grav['twig']->twig()->addFunction(
-            new TwigFunction('gis', [$this, 'gisTwigFunction'], ['is_safe' => ['html']])
+            new TwigFunction('gis', [$this, 'gisTwigFunction'], [
+                'is_safe' => ['html'],
+            ])
         );
     }
 
     /**
-     * gisTwigFunction
-     *
      * @param  array<mixed> $args
      * @return string
      */
@@ -156,7 +134,7 @@ class GisPlugin extends Plugin
         }
 
         if (array_key_exists('markers', $args)) {
-            $args['markers'] = !$args['markers'] ? [] : $args['markers'];
+            $args['markers'] = ! $args['markers'] ? [] : $args['markers'];
         }
 
         // Rendered again on every request, so the asset manager can be fed
@@ -172,7 +150,6 @@ class GisPlugin extends Plugin
      * onTwigTemplatePaths
      *
      * @param  mixed $event
-     * @return void
      */
     public function onTwigTemplatePaths($event): void
     {
@@ -186,7 +163,6 @@ class GisPlugin extends Plugin
      * from a subdirectory or plugins live outside user/plugins
      *
      * @param  string $path Path relative to the plugin root
-     * @return string
      */
     private function assetsUrl(string $path): string
     {
@@ -197,20 +173,17 @@ class GisPlugin extends Plugin
      * Adds assets as listed by GisPluginDrawMap::assets()
      *
      * @param  array<array{0: string, 1: string, 2: array<string, mixed>}> $assets
-     * @return void
      */
     private function loadAssets(array $assets): void
     {
         foreach ($assets as [$type, $path, $options]) {
             $method = 'add' . ucfirst($type);
-            $this->grav['assets']->$method($path, $options);
+            $this->grav['assets']->{$method}($path, $options);
         }
     }
 
     /**
-     * markersList
-     *
-     * @return array $options
+     * @return array
      */
     public static function markersList()
     {

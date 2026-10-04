@@ -9,36 +9,37 @@ class GisPluginShortcode extends Shortcode
 {
     public function init()
     {
-        $this->shortcode->getHandlers()->add('gis', function (ShortcodeInterface $sc) {
+        $this->shortcode->getHandlers()
+            ->add('gis', function (ShortcodeInterface $sc) {
 
-            $args = [];
-            $markers = [];
-            $parameters = $sc->getParameters();
-            $parametersMarkersKeys = preg_grep('/^marker[0-9]*$/i', array_keys($parameters));
+                $args = [];
+                $markers = [];
+                $parameters = $sc->getParameters();
+                $parametersMarkersKeys = preg_grep('/^marker[0-9]*$/i', array_keys($parameters));
 
-            foreach ($parametersMarkersKeys as $key => $value) {
-                $markers[] = $this->parseMarker($parameters[$value]);
-            }
+                foreach ($parametersMarkersKeys as $key => $value) {
+                    $markers[] = $this->parseMarker($parameters[$value]);
+                }
 
-            $args = [
-                'id' => $sc->getParameter('id') ?? null,
-                'width' => $sc->getParameter('width') ?? null,
-                'height' => $sc->getParameter('height') ?? null,
-                'center' => $sc->getParameter('center') ?? null,
-                'zoom' => $sc->getParameter('zoom') ?? null,
-                'markers' => $markers
-            ];
+                $args = [
+                    'id' => $sc->getParameter('id') ?? null,
+                    'width' => $sc->getParameter('width') ?? null,
+                    'height' => $sc->getParameter('height') ?? null,
+                    'center' => $sc->getParameter('center') ?? null,
+                    'zoom' => $sc->getParameter('zoom') ?? null,
+                    'markers' => $markers,
+                ];
 
-            // Handed to shortcode-core rather than to the asset manager: the
-            // shortcode output is cached with the page, and shortcode-core
-            // adds these assets back on every request served from that cache
-            foreach (GisPluginDrawMap::assets() as [$type, $path, $options]) {
-                $this->shortcode->addAssets($type, $path, $options);
-            }
+                // Handed to shortcode-core rather than to the asset manager: the
+                // shortcode output is cached with the page, and shortcode-core
+                // adds these assets back on every request served from that cache
+                foreach (GisPluginDrawMap::assets() as [$type, $path, $options]) {
+                    $this->shortcode->addAssets($type, $path, $options);
+                }
 
-            $map = new GisPluginDrawMap();
-            return $map->drawMap($args);
-        });
+                $map = new GisPluginDrawMap();
+                return $map->drawMap($args);
+            });
     }
 
     /**
