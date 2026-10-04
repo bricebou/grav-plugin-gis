@@ -15,8 +15,8 @@ docs: https://github.com/bricebou/grav-plugin-gis/blob/develop/README.md
 license: MIT
 
 dependencies:
-  - { name: grav, version: '>=1.7.0' }
-  - { name: shortcode-core, version: '>=5.1.1' }
+  - { name: grav, version: '>=2.0.0' }
+  - { name: shortcode-core, version: '>=6.0.0' }
 
 form:
   validation: loose

@@ -6,7 +6,7 @@ use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
 use Grav\Common\Utils;
 use Grav\Plugin\Gis\GisPluginDrawMap;
-use Twig_SimpleFunction;
+use Twig\TwigFunction;
 
 /**
  * Class GisPlugin
@@ -98,8 +98,6 @@ class GisPlugin extends Plugin
      * function is declared here. Exposing it to content authors is the same
      * trust boundary as registering it in the first place.
      *
-     * The event doesn't exist on Grav 1.x, where subscribing to it is a no-op.
-     *
      * @param  mixed $event
      * @return void
      */
@@ -141,7 +139,7 @@ class GisPlugin extends Plugin
     public function onTwigInitialized()
     {
         $this->grav['twig']->twig()->addFunction(
-            new Twig_SimpleFunction('gis', [$this, 'gisTwigFunction'], ['is_safe' => ['html']])
+            new TwigFunction('gis', [$this, 'gisTwigFunction'], ['is_safe' => ['html']])
         );
     }
 

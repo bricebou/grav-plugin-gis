@@ -24,9 +24,10 @@ You should now have all the plugin files under
 	
 > NOTE: This plugin is a modular component for Grav which may require other plugins to operate, please see its [blueprints.yaml-file on GitHub](https://github.com/bricebou/grav-plugin-gis/blob/master/blueprints.yaml).
 >
-> **Dependencies**
+> **Requirements**
 >
-> - [Grav Shortcode Core Plugin](https://github.com/getgrav/grav-plugin-shortcode-core)
+> - Grav 2.0 or later, and therefore PHP 8.3 or later. Sites still on Grav 1.7 should stay on the 0.2 releases
+> - [Grav Shortcode Core Plugin](https://github.com/getgrav/grav-plugin-shortcode-core) 6.0 or later
 
 <!-- ### Admin Plugin
 

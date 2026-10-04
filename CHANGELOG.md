@@ -1,3 +1,10 @@
+# v1.0.0
+## unreleased
+
+1. [](#improved)
+    * [BC BREAK] Requires Grav 2.0 and PHP 8.3, the minimum Grav 2 itself runs on, along with shortcode-core 6.0. Sites on Grav 1.7 should stay on 0.2.x, which keeps working there
+    * The Twig function is registered through `Twig\TwigFunction` instead of the `Twig_SimpleFunction` alias Grav keeps for Twig 1 era code
+
 # v0.2.1
 ## 10/01/2026
 

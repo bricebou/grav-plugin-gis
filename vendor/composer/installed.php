@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'bricebou/gis',
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
-        'reference' => 'b2a2816b5d618ec59800c0d120a4b8b1fdd629f9',
+        'pretty_version' => '1.x-dev',
+        'version' => '1.9999999.9999999.9999999-dev',
+        'reference' => '4e09db44ebf03287f426ddcc8f0c812a09022306',
         'type' => 'grav-plugin',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'bricebou/gis' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
-            'reference' => 'b2a2816b5d618ec59800c0d120a4b8b1fdd629f9',
+            'pretty_version' => '1.x-dev',
+            'version' => '1.9999999.9999999.9999999-dev',
+            'reference' => '4e09db44ebf03287f426ddcc8f0c812a09022306',
             'type' => 'grav-plugin',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
