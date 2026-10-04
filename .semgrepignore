@@ -1,0 +1,6 @@
+# Third party code: Leaflet is tracked through npm audit instead, see
+# package.json. Listing paths here replaces opengrep's defaults, so the
+# dependency folders are listed as well.
+/lib/
+/node_modules/
+/vendor/

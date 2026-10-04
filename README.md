@@ -154,6 +154,19 @@ geolocation:
 | ![](assets/images/marker-blue.png) | ![](assets/images/marker-green.png) | ![](assets/images/marker-orange.png) | ![](assets/images/marker-pink.png) | ![](assets/images/marker-purple.png) | ![](assets/images/marker-red.png) | ![](assets/images/marker-teal.png) | ![](assets/images/marker-yellow.png) |
 
 
+## Development
+
+### Updating Leaflet
+
+Leaflet is declared in `package.json` with an exact version, and the files the plugin loads are copied into `lib/leaflet`, which is committed since Grav installs plugins without a build step:
+
+```
+npm install leaflet@<version> --save-exact --save-dev
+npm run leaflet
+```
+
+`npm audit` reports advisories affecting the bundled version. `lib/` is left out of opengrep through `.semgrepignore`, so the scan covers the plugin's own code.
+
 ## Credits
 
 - [Leaflet javascript library](https://leafletjs.com/)

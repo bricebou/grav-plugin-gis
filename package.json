@@ -1,0 +1,12 @@
+{
+  "name": "grav-plugin-gis",
+  "private": true,
+  "description": "Front-end dependencies of the GIS plugin, copied into lib/ by `npm run leaflet`",
+  "license": "MIT",
+  "scripts": {
+    "leaflet": "rm -rf lib/leaflet && mkdir -p lib/leaflet/images && cp node_modules/leaflet/dist/leaflet.js node_modules/leaflet/dist/leaflet.js.map node_modules/leaflet/dist/leaflet.css node_modules/leaflet/LICENSE lib/leaflet/ && cp node_modules/leaflet/dist/images/* lib/leaflet/images/"
+  },
+  "devDependencies": {
+    "leaflet": "1.9.4"
+  }
+}

@@ -3,6 +3,7 @@
 
 1. [](#improved)
     * [BC BREAK] Requires Grav 2.0 and PHP 8.3, the minimum Grav 2 itself runs on, along with shortcode-core 6.0. Sites on Grav 1.7 should stay on 0.2.x, which keeps working there
+    * Leaflet is now declared in `package.json` and copied into `lib/leaflet` by `npm run leaflet`, so the bundled version is tracked and checked by `npm audit`. Only the files the plugin loads are shipped: the `-src` and ESM builds and their source maps, about 2.5 MB, are gone
     * The Twig function is registered through `Twig\TwigFunction` instead of the `Twig_SimpleFunction` alias Grav keeps for Twig 1 era code
 
 # v0.2.1
