@@ -12,6 +12,10 @@
  * markers can be dragged. The asset URLs and the map settings are added to
  * `field.gis` by GisPlugin::onApiBlueprintResolved().
  *
+ * Labels follow the admin's language through window.__GRAV_I18N, which
+ * holds the PLUGIN_GIS strings, and fall back to the ones the server
+ * translated in the site's language.
+ *
  * Marker data is only ever written through textContent and form values,
  * never as HTML.
  */
@@ -175,8 +179,19 @@ class GisMarkersField extends HTMLElement {
         return this._field.gis || {};
     }
 
-    get _labels() {
-        return this._config.labels || {};
+    // `name` is a key of field.gis.labels, such as `add_marker`
+    _label(name) {
+        const i18n = window.__GRAV_I18N;
+        const key = `PLUGIN_GIS.${name.toUpperCase()}`;
+
+        return i18n?.has?.(key) ? i18n.t(key) : (this._config.labels?.[name] || '');
+    }
+
+    _iconLabel(option) {
+        const i18n = window.__GRAV_I18N;
+        const key = `PLUGIN_GIS.MARKER_${option.value.toUpperCase()}`;
+
+        return i18n?.has?.(key) ? i18n.t(key) : option.label;
     }
 
     get _readonly() {
@@ -192,6 +207,9 @@ class GisMarkersField extends HTMLElement {
         this._build();
         this._renderList();
 
+        const unsubscribe = window.__GRAV_I18N?.subscribe?.(() => this._applyLabels());
+        this._unsubscribe = typeof unsubscribe === 'function' ? unsubscribe : null;
+
         loadLeaflet(this._config)
             .then((L) => this._initMap(L))
             .catch((error) => {
@@ -200,6 +218,7 @@ class GisMarkersField extends HTMLElement {
     }
 
     disconnectedCallback() {
+        this._unsubscribe?.();
         this._resizeObserver?.disconnect();
         this._map?.remove();
         this._map = null;
@@ -215,15 +234,30 @@ class GisMarkersField extends HTMLElement {
         this._mapElement = create('div', { class: 'gis-markers-map' });
         this._mapElement.style.height = `${this._config.height || 340}px`;
 
-        const hint = create('p', { class: 'gis-markers-hint' }, this._labels.markers_hint || '');
+        this._hint = create('p', { class: 'gis-markers-hint' });
 
         this._list = create('ol', { class: 'gis-markers-list' });
 
-        this._addButton = create('button', { type: 'button', class: 'gis-markers-add' }, `+ ${this._labels.add_marker || 'Add a marker'}`);
+        this._addButton = create('button', { type: 'button', class: 'gis-markers-add' });
         this._addButton.disabled = this._readonly;
         this._addButton.addEventListener('click', () => this._add());
 
-        this.replaceChildren(style, this._mapElement, hint, this._list, this._addButton);
+        this.replaceChildren(style, this._mapElement, this._hint, this._list, this._addButton);
+        this._applyLabels(false);
+    }
+
+    // Called again when the admin switches language: the map stays as it is
+    _applyLabels(renderList = true) {
+        if (!this._built) {
+            return;
+        }
+
+        this._hint.textContent = this._label('markers_hint');
+        this._addButton.textContent = `+ ${this._label('add_marker') || 'Add a marker'}`;
+
+        if (renderList) {
+            this._renderList();
+        }
     }
 
     _initMap(L) {
@@ -316,32 +350,32 @@ class GisMarkersField extends HTMLElement {
             const item = create('li', { class: 'gis-markers-item' });
             item.classList.toggle('is-selected', index === this._selected);
 
-            const select = create('button', { type: 'button', class: 'gis-markers-pick', title: this._labels.select_marker || '', 'aria-label': this._labels.select_marker || '', 'aria-pressed': String(index === this._selected) });
+            const select = create('button', { type: 'button', class: 'gis-markers-pick', title: this._label('select_marker'), 'aria-label': this._label('select_marker'), 'aria-pressed': String(index === this._selected) });
             select.appendChild(create('img', { src: `${this._config.icons_url || ''}/marker-${marker.icon}.png`, alt: '' }));
             select.addEventListener('click', () => this._select(index));
 
-            const name = create('input', { type: 'text', class: 'gis-markers-name', placeholder: this._labels.marker_name || '', title: this._labels.marker_name || '', 'aria-label': this._labels.marker_name || '' });
+            const name = create('input', { type: 'text', class: 'gis-markers-name', placeholder: this._label('marker_name'), title: this._label('marker_name'), 'aria-label': this._label('marker_name') });
             name.value = marker.name;
             name.addEventListener('input', () => this._update(index, { name: name.value }, false));
             name.addEventListener('focus', () => this._select(index, false));
 
-            const icon = create('select', { class: 'gis-markers-icon', title: this._labels.marker_image || '', 'aria-label': this._labels.marker_image || '' });
+            const icon = create('select', { class: 'gis-markers-icon', title: this._label('marker_image'), 'aria-label': this._label('marker_image') });
             for (const option of icons) {
-                const element = create('option', { value: option.value }, option.label);
+                const element = create('option', { value: option.value }, this._iconLabel(option));
                 element.selected = option.value === marker.icon;
                 icon.appendChild(element);
             }
             icon.addEventListener('change', () => this._update(index, { icon: icon.value }, true));
 
-            const latitude = this._coordinateInput('latitude', marker.latitude, this._labels.latitude, -90, 90);
+            const latitude = this._coordinateInput('latitude', marker.latitude, this._label('latitude'), -90, 90);
             latitude.addEventListener('input', () => this._updateCoordinate(index, latitude, 'latitude', -90, 90));
             latitude.addEventListener('focus', () => this._select(index, false));
 
-            const longitude = this._coordinateInput('longitude', marker.longitude, this._labels.longitude, -180, 180);
+            const longitude = this._coordinateInput('longitude', marker.longitude, this._label('longitude'), -180, 180);
             longitude.addEventListener('input', () => this._updateCoordinate(index, longitude, 'longitude', -180, 180));
             longitude.addEventListener('focus', () => this._select(index, false));
 
-            const remove = create('button', { type: 'button', class: 'gis-markers-remove', title: this._labels.remove_marker || '', 'aria-label': this._labels.remove_marker || '' }, '✕');
+            const remove = create('button', { type: 'button', class: 'gis-markers-remove', title: this._label('remove_marker'), 'aria-label': this._label('remove_marker') }, '✕');
             remove.addEventListener('click', () => this._remove(index));
 
             for (const control of [name, icon, latitude, longitude, remove]) {
