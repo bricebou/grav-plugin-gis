@@ -42,7 +42,6 @@ Here is the default configuration and an explanation of available options:
 ```yaml
 enabled: true              #
 private:                   # Private Area
-  load: true               # Loading Leaflet library inside the Private Area
   height: 340              # Height of the private area maps
   center: '51.505, -0.093' # Default coordinates for centering private area maps
   zoom: 13                 # Default zoom for private area maps

@@ -55,24 +55,10 @@ class GisPlugin extends Plugin
 
     public function onAssetsInitialized(): void
     {
-        if ($this->isAdmin() && $this->config->get('plugins.gis.private.load')) {
-            $this->loadAssets(GisPluginDrawMap::assets());
-
-            $center = $this->config->get('plugins.gis.private.center');
-            $zoom = $this->config->get('plugins.gis.private.zoom');
-            $this->grav['assets']->addJs('plugins://' . $this->name . '/assets/js/admin.geolocation.js', [
-                'loading' => 'defer',
-                'zoom' => $zoom,
-                'center' => $center,
-                'height' => $this->config->get('plugins.gis.private.height'),
-                'icons' => $this->assetsUrl('assets/images'),
-                'shadow' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png'),
-            ]);
-        }
-
         // Maps load their assets on their own; this only forces them on every
         // page, for a theme that draws its own Leaflet maps or renders its
-        // assets before the page content
+        // assets before the page content. isAdmin() also holds during Admin2's
+        // API requests, which have no page to add them to
         if (! $this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
             $this->loadAssets(GisPluginDrawMap::assets());
         }

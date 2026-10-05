@@ -5,6 +5,7 @@
     * The Geolocation tab works in Admin2, Grav 2's admin. A single map shows every marker of the page above the list of their names, icons and coordinates: clicking the map places the selected marker, and markers can be dragged. The frontmatter format is unchanged
 
 2. [](#improved)
+    * [BC BREAK] The classic Admin picker, `assets/js/admin.geolocation.js`, is gone along with the `private.load` setting: Grav 2 doesn't support the classic Admin, which Admin2 replaces. `private.center`, `private.zoom` and `private.height` now set up the Admin2 map
     * [BC BREAK] Requires Grav 2.0 and PHP 8.3, the minimum Grav 2 itself runs on, along with shortcode-core 6.0. Sites on Grav 1.7 should stay on 0.2.x, which keeps working there
     * Leaflet is now declared in `package.json` and copied into `lib/leaflet` by `npm run leaflet`, so the bundled version is tracked and checked by `npm audit`. Only the files the plugin loads are shipped: the `-src` and ESM builds and their source maps, about 2.5 MB, are gone
     * The Twig function is registered through `Twig\TwigFunction` instead of the `Twig_SimpleFunction` alias Grav keeps for Twig 1 era code
