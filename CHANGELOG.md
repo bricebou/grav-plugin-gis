@@ -1,5 +1,5 @@
 # v1.0.0
-## unreleased
+## 10/05/2026
 
 1. [](#new)
     * The Geolocation tab works in Admin2, Grav 2's admin. A single map shows every marker of the page above the list of their names, icons and coordinates: clicking the map places the selected marker, and markers can be dragged. The frontmatter format is unchanged
