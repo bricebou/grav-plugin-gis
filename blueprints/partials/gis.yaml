@@ -1,25 +1,12 @@
 form:
   fields:
     header.markers:
-      name: markers
-      type: list
+      # Drawn in Admin2 by admin-next/fields/gis-markers.js: a map holding
+      # every marker of the page above the list of their names, icons and
+      # coordinates
+      type: gis-markers
       label: PLUGIN_GIS.MARKERS
-      sort: false
-      fields:
-        .name:
-          type: text
-          label: PLUGIN_GIS.MARKER_NAME
-        .icon:
-          type: select
-          label: PLUGIN_GIS.MARKER_IMAGE
-          data-options@: '\Grav\Plugin\GisPlugin::markersList'
-        .latitude:
-          type: text
-          label: PLUGIN_GIS.LATITUDE
-          validate:
-            required: true
-        .longitude:
-          type: text
-          label: PLUGIN_GIS.LONGITUDE
-          validate:
-            required: true
+      validate:
+        # Grav filters a field type it doesn't know as text, which would
+        # turn the markers into an empty string on save
+        type: list

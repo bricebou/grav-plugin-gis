@@ -1,5 +1,7 @@
 en:
   PLUGIN_GIS:
+    # A
+    ADD_MARKER: 'Add a marker'
     # C
     COORDINATES: 'Coordinates'
     # G
@@ -23,11 +25,18 @@ en:
     MARKER_TEAL: 'Teal icon'
     MARKER_YELLOW: 'Yellow icon'
     MARKERS: 'Linked Coordinates'
+    MARKERS_HINT: 'Click the map to place the selected marker, or drag a marker to move it.'
     # P
     PRIVATE: 'Admin area'
     PUBLIC: 'Public area'
+    # R
+    REMOVE_MARKER: 'Remove this marker'
+    # S
+    SELECT_MARKER: 'Select this marker'
 fr:
   PLUGIN_GIS:
+    # A
+    ADD_MARKER: 'Ajouter un marker'
     # C
     COORDINATES: 'Coordonnées'
     # G
@@ -51,6 +60,11 @@ fr:
     MARKER_TEAL: 'Teal'
     MARKER_YELLOW: 'Jaune'
     MARKERS: 'Coordonnées associées'
+    MARKERS_HINT: 'Cliquez sur la carte pour placer le marker sélectionné, ou faites glisser un marker pour le déplacer.'
     # P
     PRIVATE: "Interface d'administration"
     PUBLIC: 'Interface publique'
+    # R
+    REMOVE_MARKER: 'Supprimer ce marker'
+    # S
+    SELECT_MARKER: 'Sélectionner ce marker'

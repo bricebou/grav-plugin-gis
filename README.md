@@ -65,6 +65,8 @@ Note that if you use the Admin Plugin, a file with your configuration named gis.
 The plugin provides two features.
 First, you can geolocate your page: the plugin provide a Gis page, based on the default one, in which you can add several coordinates to your page frontmatter through interactive maps. These coordinates are then displayed on your site frontend through the `{{ gis() }}` Twig function (see below).
 
+In Admin2, the Geolocation tab shows a single map holding every marker of the page, above the list of their names, icons and coordinates. Select a marker in the list, then click the map to place it, or drag a marker to move it. The map's default centre, zoom and height come from the plugin's admin area settings.
+
 The second allows you to display interactive maps into your content: the plugin provides the `[gis /]` shortcode you can use in your content to display interactive maps, with or without markers. For example:
 
 ```
@@ -146,6 +148,8 @@ geolocation:
   import@:
     type: partials/gis
 ```
+
+The partial declares `header.markers` as a `gis-markers` field, drawn in Admin2 by `admin-next/fields/gis-markers.js`. A blueprint declaring the field itself must keep `validate: type: list`: Grav filters a field type it doesn't know as text, which would empty the markers on save.
 
 ### Available markers
 

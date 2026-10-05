@@ -43,6 +43,7 @@ class GisPlugin extends Plugin
     public function onPluginsInitialized(): void
     {
         $this->enable([
+            'onApiBlueprintResolved' => ['onApiBlueprintResolved', 0],
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
             'onBuildTwigSandboxPolicy' => ['onBuildTwigSandboxPolicy', 0],
             'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
@@ -75,6 +76,22 @@ class GisPlugin extends Plugin
         if (! $this->isAdmin() && $this->config->get('plugins.gis.public.load')) {
             $this->loadAssets(GisPluginDrawMap::assets());
         }
+    }
+
+    /**
+     * Hands the gis-markers field what its Admin2 component needs
+     *
+     * Admin2 only passes a fixed set of blueprint keys on to the browser, and
+     * never outputs the asset manager, so the asset URLs and the map settings
+     * are added to the serialized field here
+     */
+    public function onApiBlueprintResolved(Event $event): void
+    {
+        if ($event['context'] !== 'page' || ! is_array($event['fields'])) {
+            return;
+        }
+
+        $event['fields'] = $this->configureMarkersFields($event['fields']);
     }
 
     /**
@@ -159,6 +176,67 @@ class GisPlugin extends Plugin
     private function assetsUrl(string $path): string
     {
         return (string) Utils::url('plugins://' . $this->name . '/' . $path, false, true);
+    }
+
+    /**
+     * Walks the serialized blueprint, tabs and sections included
+     *
+     * @param  array<mixed> $fields
+     * @return array<mixed>
+     */
+    private function configureMarkersFields(array $fields): array
+    {
+        foreach ($fields as $key => $field) {
+            if (! is_array($field)) {
+                continue;
+            }
+
+            if (($field['type'] ?? null) === 'gis-markers') {
+                $field['gis'] = $this->markersFieldConfig();
+            }
+
+            if (isset($field['fields']) && is_array($field['fields'])) {
+                $field['fields'] = $this->configureMarkersFields($field['fields']);
+            }
+
+            $fields[$key] = $field;
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function markersFieldConfig(): array
+    {
+        $language = $this->grav['language'];
+
+        $icons = [];
+        foreach (self::markersList() as $icon => $label) {
+            $icons[] = [
+                'value' => $icon,
+                'label' => $language->translate($label),
+            ];
+        }
+
+        $labels = [];
+        foreach (['ADD_MARKER', 'LATITUDE', 'LONGITUDE', 'MARKER_IMAGE', 'MARKER_NAME', 'MARKERS_HINT', 'REMOVE_MARKER', 'SELECT_MARKER'] as $key) {
+            $labels[strtolower($key)] = $language->translate('PLUGIN_GIS.' . $key);
+        }
+
+        return [
+            'leaflet_js' => $this->assetsUrl('lib/leaflet/leaflet.js'),
+            'leaflet_css' => $this->assetsUrl('lib/leaflet/leaflet.css'),
+            'gis_css' => $this->assetsUrl('assets/css/gis.css'),
+            'icons_url' => $this->assetsUrl('assets/images'),
+            'shadow_url' => $this->assetsUrl('lib/leaflet/images/marker-shadow.png'),
+            'icons' => $icons,
+            'center' => (string) $this->config->get('plugins.gis.private.center'),
+            'zoom' => (int) $this->config->get('plugins.gis.private.zoom', 13),
+            'height' => (int) $this->config->get('plugins.gis.private.height', 340),
+            'labels' => $labels,
+        ];
     }
 
     /**
