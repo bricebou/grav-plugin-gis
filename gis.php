@@ -10,6 +10,9 @@ use Grav\Plugin\Gis\GisPluginDrawMap;
 use RocketTheme\Toolbox\Event\Event;
 use Twig\TwigFunction;
 
+/**
+ * @phpstan-import-type Asset from GisPluginDrawMap
+ */
 class GisPlugin extends Plugin
 {
     /**
@@ -161,13 +164,15 @@ class GisPlugin extends Plugin
     /**
      * Adds assets as listed by GisPluginDrawMap::assets()
      *
-     * @param  array<array{0: string, 1: string, 2: array<string, mixed>}> $assets
+     * @param  list<Asset> $assets
      */
     private function loadAssets(array $assets): void
     {
-        foreach ($assets as [$type, $path, $options]) {
-            $method = 'add' . ucfirst($type);
-            $this->grav['assets']->{$method}($path, $options);
+        foreach ($assets as ['type' => $type, 'path' => $path, 'options' => $options]) {
+            match ($type) {
+                'js' => $this->grav['assets']->addJs($path, $options),
+                'css' => $this->grav['assets']->addCss($path, $options),
+            };
         }
     }
 

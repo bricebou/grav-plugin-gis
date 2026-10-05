@@ -33,8 +33,8 @@ class GisPluginShortcode extends Shortcode
                 // Handed to shortcode-core rather than to the asset manager: the
                 // shortcode output is cached with the page, and shortcode-core
                 // adds these assets back on every request served from that cache
-                foreach (GisPluginDrawMap::assets() as [$type, $path, $options]) {
-                    $this->shortcode->addAssets($type, $path, $options);
+                foreach (GisPluginDrawMap::assets() as $asset) {
+                    $this->shortcode->addAssets($asset['type'], $asset['path'], $asset['options']);
                 }
 
                 $map = new GisPluginDrawMap();

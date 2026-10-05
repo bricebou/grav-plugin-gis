@@ -6,6 +6,9 @@ use Grav\Common\Grav;
 use Grav\Common\Utils;
 use Grav\Plugin\GisPlugin;
 
+/**
+ * @phpstan-type Asset array{type: 'js'|'css', path: string, options: array<string, mixed>}
+ */
 class GisPluginDrawMap
 {
     /**
@@ -47,23 +50,37 @@ class GisPluginDrawMap
      * function adds them on every request, while the shortcode hands them to
      * shortcode-core, which stores them alongside the cached page content
      *
-     * @return array<array{0: string, 1: string, 2: array<string, mixed>}> Type, path and options
+     * @return list<Asset>
      */
     public static function assets(): array
     {
         return [
             [
-                'js', 'plugins://gis/lib/leaflet/leaflet.js', [
+                'type' => 'js',
+                'path' => 'plugins://gis/lib/leaflet/leaflet.js',
+                'options' => [
                     'loading' => 'defer',
-                ]],
+                ],
+            ],
             [
-                'js', 'plugins://gis/assets/js/gis.js', [
+                'type' => 'js',
+                'path' => 'plugins://gis/assets/js/gis.js',
+                'options' => [
                     'loading' => 'defer',
-                ]],
-            ['css', 'plugins://gis/lib/leaflet/leaflet.css', []],
+                ],
+            ],
+            [
+                'type' => 'css',
+                'path' => 'plugins://gis/lib/leaflet/leaflet.css',
+                'options' => [],
+            ],
             // Loaded after Leaflet's own stylesheet: it undoes what a theme's
             // [role="button"] reset does to markers and controls
-            ['css', 'plugins://gis/assets/css/gis.css', []],
+            [
+                'type' => 'css',
+                'path' => 'plugins://gis/assets/css/gis.css',
+                'options' => [],
+            ],
         ];
     }
 
