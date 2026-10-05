@@ -5,20 +5,17 @@ namespace Grav\Plugin;
 use Composer\Autoload\ClassLoader;
 use Grav\Common\Plugin;
 use Grav\Common\Utils;
+use Grav\Events\TypesEvent;
 use Grav\Plugin\Gis\GisPluginDrawMap;
+use RocketTheme\Toolbox\Event\Event;
 use Twig\TwigFunction;
 
 class GisPlugin extends Plugin
 {
     /**
-     * @return array
+     * The other events are only subscribed to once the plugins are initialised
      *
-     * The getSubscribedEvents() gives the core a list of events
-     *     that the plugin wants to listen to. The key of each
-     *     array section is the event that the plugin listens to
-     *     and the value (in the form of an array) contains the
-     *     callable (or function) as well as the priority. The
-     *     higher the number the higher the priority.
+     * @return array<string, array<int, array{0: string, 1: int}>>
      */
     public static function getSubscribedEvents(): array
     {
@@ -42,9 +39,7 @@ class GisPlugin extends Plugin
      */
     public function onPluginsInitialized(): void
     {
-        // Enable the main events we are interested in
         $this->enable([
-            // Put your main events here
             'onAssetsInitialized' => ['onAssetsInitialized', 0],
             'onBuildTwigSandboxPolicy' => ['onBuildTwigSandboxPolicy', 0],
             'onGetPageBlueprints' => ['onGetPageBlueprints', 0],
@@ -84,10 +79,8 @@ class GisPlugin extends Plugin
      * allowlist, so `{{ gis() }}` written in a page fails silently until the
      * function is declared here. Exposing it to content authors is the same
      * trust boundary as registering it in the first place.
-     *
-     * @param  mixed $event
      */
-    public function onBuildTwigSandboxPolicy($event): void
+    public function onBuildTwigSandboxPolicy(Event $event): void
     {
         // Read-modify-write: the event arguments are returned by value
         $functions = $event['functions'];
@@ -96,18 +89,16 @@ class GisPlugin extends Plugin
     }
 
     /**
-     * onGetPageBlueprints
-     *
-     * @param  mixed $event
+     * Adds the Gis page blueprint, a default page with a Geolocation tab
      */
-    public function onGetPageBlueprints($event): void
+    public function onGetPageBlueprints(TypesEvent $event): void
     {
         $types = $event->types;
         $types->scanBlueprints('plugins://' . $this->name . '/blueprints');
     }
 
     /**
-     * Initialize configuration
+     * Registers the [gis] shortcode
      */
     public function onShortcodeHandlers(): void
     {
@@ -147,11 +138,9 @@ class GisPlugin extends Plugin
     }
 
     /**
-     * onTwigTemplatePaths
-     *
-     * @param  mixed $event
+     * Makes the plugin's templates available to Twig, so a theme can override them
      */
-    public function onTwigTemplatePaths($event): void
+    public function onTwigTemplatePaths(): void
     {
         $this->grav['twig']->twig_paths[] = __DIR__ . '/templates';
     }
@@ -183,16 +172,20 @@ class GisPlugin extends Plugin
     }
 
     /**
-     * @return array
+     * Lists the marker icons shipped in assets/images, for the blueprint's select
+     *
+     * @return array<string, string> Icon name and its translation key
      */
-    public static function markersList()
+    public static function markersList(): array
     {
         $options = [];
-        $icons = glob(__DIR__ . '/assets/images/marker-*-2x.png');
+        // glob() returns false on some systems when nothing matches
+        $icons = glob(__DIR__ . '/assets/images/marker-*-2x.png') ?: [];
 
         foreach ($icons as $value) {
-            $matches = [];
-            preg_match('/marker-([a-z]*)-2x.png/', $value, $matches);
+            if (preg_match('/marker-([a-z]+)-2x\.png$/', $value, $matches) !== 1) {
+                continue;
+            }
 
             $options[$matches[1]] = 'PLUGIN_GIS.MARKER_' . strtoupper($matches[1]);
         }

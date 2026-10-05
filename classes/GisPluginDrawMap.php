@@ -35,6 +35,9 @@ class GisPluginDrawMap
 
     private string $template_html = 'partials/leaflet.html.twig';
 
+    /**
+     * @var array<string, mixed>
+     */
     private array $template_vars = [];
 
     /**

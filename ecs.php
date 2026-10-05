@@ -11,6 +11,8 @@ return ECSConfig::configure()
         __DIR__ . '/assets/',
         __DIR__ . '/lib/',
         __DIR__ . '/node_modules/',
+        // Declarations mirroring Grav, Twig and shortcode-core, only meant for PHPStan
+        __DIR__ . '/stubs/',
         __DIR__ . '/tools/',
         __DIR__ . '/vendor/',
     ])

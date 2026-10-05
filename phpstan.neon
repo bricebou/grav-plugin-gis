@@ -1,0 +1,21 @@
+parameters:
+    level: 8
+    phpVersion: 80300
+    paths:
+        - .
+    excludePaths:
+        analyse:
+            - assets
+            - lib
+            - node_modules
+            - stubs
+            - tools
+            - vendor
+    # Grav isn't a Composer dependency of a plugin, and no Grav install is
+    # needed to analyse it: the symbols the plugin uses are declared in stubs/
+    scanDirectories:
+        - stubs
+    bootstrapFiles:
+        - vendor/autoload.php
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: true

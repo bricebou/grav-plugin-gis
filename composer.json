@@ -26,7 +26,8 @@
     "ecs": "tools/vendor/bin/ecs check --fix",
     "ecs:check": "tools/vendor/bin/ecs check",
     "rector": "tools/vendor/bin/rector process",
-    "rector:check": "tools/vendor/bin/rector process --dry-run"
+    "rector:check": "tools/vendor/bin/rector process --dry-run",
+    "phpstan": "tools/vendor/bin/phpstan analyse --memory-limit=1G"
   },
   "config": {
     "platform": {

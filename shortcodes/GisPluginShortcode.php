@@ -15,7 +15,7 @@ class GisPluginShortcode extends Shortcode
                 $args = [];
                 $markers = [];
                 $parameters = $sc->getParameters();
-                $parametersMarkersKeys = preg_grep('/^marker[0-9]*$/i', array_keys($parameters));
+                $parametersMarkersKeys = preg_grep('/^marker[0-9]*$/i', array_keys($parameters)) ?: [];
 
                 foreach ($parametersMarkersKeys as $value) {
                     $markers[] = $this->parseMarker($parameters[$value]);

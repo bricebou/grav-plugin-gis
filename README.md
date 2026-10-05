@@ -177,7 +177,10 @@ composer ecs:check   # report coding standard violations
 composer ecs         # fix them
 composer rector:check  # report the refactorings Rector would apply
 composer rector        # apply them
+composer phpstan       # static analysis, at level 8
 ```
+
+PHPStan runs without a Grav install: the Grav, Twig and shortcode-core symbols the plugin uses are declared in `stubs/`, to be extended when the plugin starts using new ones.
 
 ## Credits
 
